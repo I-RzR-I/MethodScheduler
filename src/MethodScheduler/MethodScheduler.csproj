@@ -1,0 +1,61 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworkss>netstandard2.0</TargetFrameworkss>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Authors>RzR</Authors>
+    <Copyright>RzR</Copyright>
+    <Owners>RzR</Owners>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageIcon>PackageIcon.png</PackageIcon>
+    <NoWarn>$(NoWarn);CS8032</NoWarn>
+    <EnableNETAnalyzers>false</EnableNETAnalyzers>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageTags>Schedule;Method;Task;Timer;Middleware;TaskScheduler;DotNet;Worker</PackageTags>
+    <RepositoryUrl>https://github.com/I-RzR-I/MethodScheduler</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/I-RzR-I/MethodScheduler</PackageProjectUrl>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageDescription>The primary purpose of this repository is to provide a simple and effective scheduler for one or multiple methods(functions, business logic blocks, etc) using `System.Threading.Timer` with some timer settings.</PackageDescription>
+    <PackageTitle>RzR.Services.MethodScheduler (MethodScheduler)</PackageTitle>
+    <Title>RzR.Services.MethodScheduler (MethodScheduler)</Title>
+    <LangVersion>8.0</LangVersion>
+    <Language>en-US</Language>
+    <PackageIconUrl />
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\shared\GeneralAssemblyInfo.cs" Link="Properties\GeneralAssemblyInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\assets\PackageIcon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DomainCommonExtensions" Version="1.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+  </ItemGroup>
+
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties BuildVersion_StartDate="2022/8/22" />
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="PowerShell -NoProfile -ExecutionPolicy unrestricted -file $(SolutionDir)../build/pack.ps1 $(ConfigurationName)" />
+  </Target>
+</Project>
