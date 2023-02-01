@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <TargetFrameworkss>netstandard2.0</TargetFrameworkss>
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Authors>RzR</Authors>
     <Copyright>RzR</Copyright>
@@ -17,10 +17,12 @@
     <PackageProjectUrl>https://github.com/I-RzR-I/MethodScheduler</PackageProjectUrl>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageDescription>The primary purpose of this repository is to provide a simple and effective scheduler for one or multiple methods(functions, business logic blocks, etc) using `System.Threading.Timer` with some timer settings.</PackageDescription>
+    <Summary>The primary purpose of this repository is to provide a simple and effective scheduler for one or multiple methods(functions, business logic blocks, etc) using `System.Threading.Timer` with some timer settings.</Summary>
     <PackageTitle>RzR.Services.MethodScheduler (MethodScheduler)</PackageTitle>
     <Title>RzR.Services.MethodScheduler (MethodScheduler)</Title>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>9.0</LangVersion>
     <Language>en-US</Language>
+    <RepositoryType>GIT</RepositoryType>
     <PackageIconUrl />
   </PropertyGroup>
 
@@ -45,7 +47,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DomainCommonExtensions" Version="1.0.0" />
+    <PackageReference Include="DomainCommonExtensions" Version="1.0.5.1849" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
   </ItemGroup>

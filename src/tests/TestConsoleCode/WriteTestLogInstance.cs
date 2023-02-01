@@ -19,6 +19,7 @@
 using System;
 using System.Threading.Tasks;
 using DomainCommonExtensions.DataTypeExtensions;
+// ReSharper disable ClassNeverInstantiated.Global
 
 #endregion
 
@@ -26,14 +27,16 @@ namespace TestConsoleCode
 {
     public class WriteTestLogInstance
     {
+#pragma warning disable IDE0090 // Use 'new(...)'
         public static readonly WriteTestLogInstance Instance = new WriteTestLogInstance();
+#pragma warning restore IDE0090 // Use 'new(...)'
 
         /// <summary>
         ///     Init
         /// </summary>
         /// <returns></returns>
         /// <remarks></remarks>
-        public async Task<bool> InitAsync()
+        public static async Task<bool> InitAsync()
         {
             Console.WriteLine(
                 $"async WriteTestLogInstance.InitAsync-{DateTime.Now.FormatToString("yyyy-MM-dd-HH-mm-ss")}");
@@ -46,7 +49,8 @@ namespace TestConsoleCode
         /// </summary>
         /// <returns></returns>
         /// <remarks></remarks>
-        public bool Init()
+        // ReSharper disable once UnusedMember.Global
+        public static bool Init()
         {
             Console.WriteLine($"WriteTestLogInstance.Init-{DateTime.Now.FormatToString("yyyy-MM-dd-HH-mm-ss")}");
 

@@ -260,7 +260,6 @@ package.json
 
 # Bower Libraries
 wwwroot/lib/
-#src/application/Setrio.Gateway.Api/healthchecksdb
 
 # Sonarqube
 .sonarqube
@@ -268,3 +267,7 @@ wwwroot/lib/
 # Coverlet
 Report/
 coverage.*
+
+# Certificates
+*.pfx
+*.cer
