@@ -32,7 +32,7 @@ namespace TestConsoleCode
         /// </summary>
         /// <returns></returns>
         /// <remarks></remarks>
-        public async Task<bool> InitAsync()
+        public static async Task<bool> InitAsync()
         {
             Console.WriteLine($"async WriteTestLog.InitAsync-{DateTime.Now.FormatToString("yyyy-MM-dd-HH-mm-ss")}");
             Thread.Sleep(TimeSpan.FromMinutes(2));
@@ -46,7 +46,7 @@ namespace TestConsoleCode
         /// </summary>
         /// <returns></returns>
         /// <remarks></remarks>
-        public async Task<bool> Init2Async()
+        public static async Task<bool> Init2Async()
         {
             Console.WriteLine($"async WriteTestLog.Init2Async-{DateTime.Now.FormatToString("yyyy-MM-dd-HH-mm-ss")}");
 
@@ -58,7 +58,7 @@ namespace TestConsoleCode
         /// </summary>
         /// <returns></returns>
         /// <remarks></remarks>
-        public async Task InitTask1Async()
+        public static async Task InitTask1Async()
         {
             Console.WriteLine(
                 $"async WriteTestLog.InitTask1Async-{DateTime.Now.FormatToString("yyyy-MM-dd-HH-mm-ss")}");
@@ -71,7 +71,7 @@ namespace TestConsoleCode
         /// </summary>
         /// <returns></returns>
         /// <remarks></remarks>
-        public async Task InitTask2Async()
+        public static async Task InitTask2Async()
         {
             Console.WriteLine(
                 $"async WriteTestLog.InitTask2Async-{DateTime.Now.FormatToString("yyyy-MM-dd-HH-mm-ss")}");
@@ -84,7 +84,7 @@ namespace TestConsoleCode
         /// </summary>
         /// <returns></returns>
         /// <remarks></remarks>
-        public async Task InitTask3Async()
+        public static async Task InitTask3Async()
         {
             Console.WriteLine(
                 $"async WriteTestLog.InitTask3Async-{DateTime.Now.FormatToString("yyyy-MM-dd-HH-mm-ss")}");

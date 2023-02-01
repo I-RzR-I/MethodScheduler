@@ -4,7 +4,7 @@
 //  Created On       : 2022-08-25 01:34
 // 
 //  Last Modified By : RzR
-//  Last Modified On : 2022-09-01 17:55
+//  Last Modified On : 2023-02-01 23:51
 // ***********************************************************************
 //  <copyright file="SchedulerSettings.cs" company="">
 //   Copyright (c) RzR. All rights reserved.
@@ -39,10 +39,11 @@ namespace MethodScheduler.Models
         public bool DisableOnFailure { get; set; } = false;
 
         /// <summary>
-        /// Gets or sets a value indicating whether throw exception in case when an error occured.
+        ///     Gets or sets a value indicating whether throw exception in case when an error occured.
         /// </summary>
         /// <value>
-        ///   <see langword="true" /> if the error will be thrown; otherwise, <see langword="false" />.</value>
+        ///     <see langword="true" /> if the error will be thrown; otherwise, <see langword="false" />.
+        /// </value>
         /// <remarks></remarks>
         public bool ThrowException { get; set; } = false;
     }

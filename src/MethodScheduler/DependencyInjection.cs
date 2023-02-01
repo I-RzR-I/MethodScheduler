@@ -14,6 +14,8 @@
 //  </summary>
 // ***********************************************************************
 
+#if NETSTANDARD2_0_OR_GREATER || NET
+
 #region U S A G E S
 
 using MethodScheduler.Abstractions;
@@ -44,3 +46,4 @@ namespace MethodScheduler
         }
     }
 }
+#endif

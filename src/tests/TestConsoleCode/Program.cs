@@ -68,8 +68,8 @@ namespace TestConsoleCode
 
             var obj1 = new WriteTestLog();
 
-            service.Start(obj1.InitAsync, settings);
-            service.Start(obj1.Init2Async, new SchedulerSettings
+            service.Start(WriteTestLog.InitAsync, settings);
+            service.Start(WriteTestLog.Init2Async, new SchedulerSettings
             {
                 DisableOnFailure = false,
                 SuccessInterval = 0.5,
@@ -89,8 +89,8 @@ namespace TestConsoleCode
             var obj1 = new WriteTestLog();
             service.Start(new List<Func<Task<bool>>>
             {
-                obj1.InitAsync,
-                obj1.Init2Async
+                WriteTestLog.InitAsync,
+                WriteTestLog.Init2Async
             }, settings);
         }
 
@@ -106,9 +106,9 @@ namespace TestConsoleCode
             var obj1 = new WriteTestLog();
             service.Start(new List<Func<Task>>
             {
-                obj1.InitTask1Async,
-                obj1.InitTask2Async,
-                obj1.InitTask3Async
+                WriteTestLog.InitTask1Async,
+                WriteTestLog.InitTask2Async,
+                WriteTestLog.InitTask3Async
             }, settings);
         }
 
@@ -123,7 +123,7 @@ namespace TestConsoleCode
 
             service.Start(new List<Func<Task>>
             {
-                WriteTestLogInstance.Instance.InitAsync
+                WriteTestLogInstance.InitAsync
             }, settings);
         }
 
@@ -151,12 +151,11 @@ namespace TestConsoleCode
                 process3.Start();
             }
 
-            using (var process4 = new Process())
+            using var process4 = new Process
             {
-                process4.StartInfo.FileName = $@"{initPath}TestConsoleCode.exe";
-                process4.StartInfo.Arguments = "4";
-                process4.Start();
-            }
+                StartInfo = { FileName = $@"{initPath}TestConsoleCode.exe", Arguments = "4" }
+            };
+            process4.Start();
         }
     }
 }

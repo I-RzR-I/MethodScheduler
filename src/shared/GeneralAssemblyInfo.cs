@@ -29,20 +29,24 @@ using System.Resources;
 
 [assembly: AssemblyCompany("RzR ®")]
 [assembly: AssemblyProduct("Method scheduler")]
-[assembly: AssemblyCopyright("Copyright © 2022 RzR All rights reserved.")]
+[assembly: AssemblyCopyright("Copyright © 2022-2023 RzR All rights reserved.")]
 [assembly: AssemblyTrademark("® RzR™")]
 [assembly:
     AssemblyDescription(
         "The primary purpose of this repository is to provide a simple and effective scheduler for one or multiple methods(functions, business logic blocks, etc) using `System.Threading.Timer` with some timer settings.")]
 
+#if NET45_OR_GREATER || NETSTANDARD2_0_OR_GREATER || NET
 [assembly: AssemblyMetadata("TermsOfService", "")]
 
 [assembly: AssemblyMetadata("ContactUrl", "")]
 [assembly: AssemblyMetadata("ContactName", "RzR")]
 [assembly: AssemblyMetadata("ContactEmail", "ddpRzR@hotmail.com")]
+#endif
 
+#if NETSTANDARD2_0_OR_GREATER || NET
 [assembly: NeutralResourcesLanguage("en-US", UltimateResourceFallbackLocation.MainAssembly)]
+#endif
 
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: AssemblyInformationalVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.0.1.2212")]
+[assembly: AssemblyFileVersion("1.0.1.2212")]
+[assembly: AssemblyInformationalVersion("1.0.1.x")]
