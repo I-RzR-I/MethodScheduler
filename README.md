@@ -1,5 +1,8 @@
 > **Note** This repository is developed in .netstandard2.0
 
+[![NuGet Version](https://img.shields.io/nuget/v/MethodScheduler.svg?style=flat&logo=nuget)](https://www.nuget.org/packages/MethodScheduler/)
+[![Nuget Downloads](https://img.shields.io/nuget/dt/MethodScheduler.svg?style=flat&logo=nuget)](https://www.nuget.org/packages/MethodScheduler)
+
 The method cron-based Scheduler for .NET Framework or Core. This is a simple and lightweight version of more complex available schedulers.
 
 In this library is available to execute multiple tasks and simple methods with a few settings, like success interval, failure execute interval, and the possibility to disable on failure.
@@ -10,8 +13,6 @@ For using a scheduler are available 2 methods: `Start` and `Stop`.
 **In case you wish to use it in your project, u can install the package from <a href="https://www.nuget.org/packages/MethodScheduler" target="_blank">nuget.org</a>** or specify what version you want:
 
 > `Install-Package MethodScheduler -Version x.x.x.x`
-
-[![NuGet Version](https://img.shields.io/nuget/v/MethodScheduler.svg?style=flat)](https://www.nuget.org/packages/MethodScheduler/)
 
 ## Content
 1. [USING](docs/usage.md)
