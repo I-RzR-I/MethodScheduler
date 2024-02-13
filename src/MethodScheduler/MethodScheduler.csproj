@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Authors>RzR</Authors>
@@ -47,9 +46,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DomainCommonExtensions" Version="1.0.11.1319" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="DomainCommonExtensions" Version="1.1.1.7310" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.1.38" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.32" />
   </ItemGroup>
 
   <ProjectExtensions>
@@ -57,7 +56,7 @@
       <UserProperties BuildVersion_StartDate="2022/8/22" />
     </VisualStudio>
   </ProjectExtensions>
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+  <!--<Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="PowerShell -NoProfile -ExecutionPolicy unrestricted -file $(SolutionDir)../build/pack.ps1 $(ConfigurationName)" />
-  </Target>
+  </Target>-->
 </Project>

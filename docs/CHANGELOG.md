@@ -1,9 +1,13 @@
-### **1.0.3.2317** 
+### **v1.0.4.8097** 
+-> Update lib extension version. <br/>
+-> Fix warning package. <br/>
+
+### **v1.0.3.2317** 
 -> Update lib extension version.<br />
 
-### **v.1.0.2.057** 
+### **v1.0.2.057** 
 -> Update lib extension version. <br/>
 
-### **v.1.0.1.2212** 
+### **v1.0.1.2212** 
 -> Update lib extension version. <br/>
 -> Cleanup code and review code. <br/>
