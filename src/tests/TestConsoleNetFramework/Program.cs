@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using MethodScheduler.Helpers;
 using MethodScheduler.Models;
@@ -32,19 +33,22 @@ namespace TestConsoleNetFramework
     {
         private static void Main(string[] args)
         {
-            if (args.Any())
-            {
-                if (args[0] == "1") Run();
-                if (args[0] == "2") RunMultiple();
-                if (args[0] == "3") RunMultipleTask();
-                if (args[0] == "4") RunMultipleInstance();
-                if (args[0] == "5") RunMultipleInstanceStop();
-                if (args[0] == "6") RunMultipleResult();
-            }
-            else
-            {
-                RunProcess();
-            }
+            RunMultipleInstanceStop();
+            //Run01();
+
+            //if (args.Any())
+            //{
+            //    if (args[0] == "1") Run();
+            //    if (args[0] == "2") RunMultiple();
+            //    if (args[0] == "3") RunMultipleTask();
+            //    if (args[0] == "4") RunMultipleInstance();
+            //    if (args[0] == "5") RunMultipleInstanceStop();
+            //    if (args[0] == "6") RunMultipleResult();
+            //}
+            //else
+            //{
+            //    RunProcess();
+            //}
 
             Console.ReadKey();
         }
@@ -67,6 +71,19 @@ namespace TestConsoleNetFramework
                 SuccessInterval = 0.5,
                 FailInterval = 0.3
             });
+        }
+
+        private static void Run01()
+        {
+            var settings = new SchedulerSettings
+            {
+                DisableOnFailure = false,
+                SuccessInterval = 1,
+                FailInterval = 0.5,
+                ThrowException = true
+            };
+
+            MultipleScheduler.Instance.Start(() => new WriteTestLog().Init(), settings);
         }
 
         private static void RunMultiple()
@@ -149,9 +166,11 @@ namespace TestConsoleNetFramework
             {
                 WriteTestLogInstance.Instance.InitAsync
             }, settings);
+            
+            Thread.Sleep(TimeSpan.FromSeconds(20));
 
-            Console.WriteLine("Stop");
             mInst.Stop();
+            Console.WriteLine("Stop");
         }
 
         private static void RunProcess()

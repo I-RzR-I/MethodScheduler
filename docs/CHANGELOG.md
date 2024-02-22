@@ -1,3 +1,6 @@
+### **v1.0.5.8002** 
+-> Add `Start` method with `Action`.
+
 ### **v1.0.4.8097** 
 -> Update lib extension version. <br/>
 -> Fix warning package. <br/>

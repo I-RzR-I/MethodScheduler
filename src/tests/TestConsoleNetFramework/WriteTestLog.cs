@@ -32,6 +32,16 @@ namespace TestConsoleNetFramework
         /// </summary>
         /// <returns></returns>
         /// <remarks></remarks>
+        public void Init()
+        {
+            Console.WriteLine($"WriteTestLog.Init-{DateTime.Now.FormatToString("yyyy-MM-dd-HH-mm-ss")}");
+        }
+
+        /// <summary>
+        ///     Init
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks></remarks>
         public async Task<bool> InitAsync()
         {
             Console.WriteLine($"async WriteTestLog.InitAsync-{DateTime.Now.FormatToString("yyyy-MM-dd-HH-mm-ss")}");

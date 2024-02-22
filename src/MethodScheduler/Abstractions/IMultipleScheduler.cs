@@ -36,6 +36,22 @@ namespace MethodScheduler.Abstractions
         /// <param name="scheduleMethod">Required. Method to schedule</param>
         /// <param name="settings">Required. Scheduler settings</param>
         /// <remarks></remarks>
+        void Start(Action scheduleMethod, SchedulerSettings settings);
+
+        /// <summary>
+        ///     Start new schedule
+        /// </summary>
+        /// <param name="scheduleMethods">Required. Methods to schedule</param>
+        /// <param name="settings">Required. Scheduler settings</param>
+        /// <remarks></remarks>
+        void Start(IEnumerable<Action> scheduleMethods, SchedulerSettings settings);
+
+        /// <summary>
+        ///     Start new schedule
+        /// </summary>
+        /// <param name="scheduleMethod">Required. Method to schedule</param>
+        /// <param name="settings">Required. Scheduler settings</param>
+        /// <remarks></remarks>
         void Start(Func<Task> scheduleMethod, SchedulerSettings settings);
 
         /// <summary>
