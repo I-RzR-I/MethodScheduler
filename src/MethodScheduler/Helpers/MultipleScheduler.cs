@@ -57,6 +57,32 @@ namespace MethodScheduler.Helpers
         /// <param name="scheduleMethod">Required. Method to schedule</param>
         /// <param name="settings">Required. Scheduler settings</param>
         /// <remarks></remarks>
+        private MultipleScheduler(Action scheduleMethod, SchedulerSettings settings)
+        {
+            base.Settings = settings;
+
+            base.StartScheduler(scheduleMethod);
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="MultipleScheduler" /> class.
+        /// </summary>
+        /// <param name="scheduleMethods">Required. Methods to schedule</param>
+        /// <param name="settings">Required. Scheduler settings</param>
+        /// <remarks></remarks>
+        private MultipleScheduler(IEnumerable<Action> scheduleMethods, SchedulerSettings settings)
+        {
+            base.Settings = settings;
+
+            base.StartScheduler(scheduleMethods);
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="MultipleScheduler" /> class.
+        /// </summary>
+        /// <param name="scheduleMethod">Required. Method to schedule</param>
+        /// <param name="settings">Required. Scheduler settings</param>
+        /// <remarks></remarks>
         private MultipleScheduler(Func<Task> scheduleMethod, SchedulerSettings settings)
         {
             base.Settings = settings;
@@ -78,6 +104,20 @@ namespace MethodScheduler.Helpers
         }
 
         /// <inheritdoc />
+        public void Start(Action scheduleMethod, SchedulerSettings settings)
+        {
+            if (Queue.IsNull()) Queue = new List<MultipleScheduler>();
+            Queue.Add(new MultipleScheduler(scheduleMethod, settings));
+        }
+
+        /// <inheritdoc />
+        public void Start(IEnumerable<Action> scheduleMethods, SchedulerSettings settings)
+        {
+            if (Queue.IsNull()) Queue = new List<MultipleScheduler>();
+            Queue.Add(new MultipleScheduler(scheduleMethods, settings));
+        }
+
+        /// <inheritdoc />
         public void Start(Func<Task> scheduleMethod, SchedulerSettings settings)
         {
             if (Queue.IsNull()) Queue = new List<MultipleScheduler>();
@@ -94,8 +134,13 @@ namespace MethodScheduler.Helpers
         /// <inheritdoc />
         public void Stop()
         {
-            if (Queue != null && Queue.Any())
-                Queue.ToList().ForEach(n => n.StopScheduler());
+            if (Queue.IsNotNull() && Queue.Any())
+                Queue.ToList().ForEach(n =>
+                {
+                    n.StopScheduler();
+                    //Queue.Remove(n);
+                });
+
             base.StopScheduler();
         }
     }

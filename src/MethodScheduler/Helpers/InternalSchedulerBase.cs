@@ -25,6 +25,8 @@ using System.Threading.Tasks;
 using DomainCommonExtensions.DataTypeExtensions;
 using MethodScheduler.Models;
 
+// ReSharper disable AsyncVoidLambda
+
 #endregion
 
 namespace MethodScheduler.Helpers
@@ -55,18 +57,18 @@ namespace MethodScheduler.Helpers
         /// <summary>
         ///     Start methods scheduler
         /// </summary>
-        /// <param name="scheduleMethod"></param>
+        /// <param name="scheduleMethod">Schedule method</param>
         /// <remarks></remarks>
-        protected void StartScheduler(Func<Task> scheduleMethod)
+        protected void StartScheduler(Action scheduleMethod)
         {
             var error = new StringBuilder();
             var failure = false;
 
-            _timer = new Timer(async state =>
+            _timer = new Timer(_ =>
             {
                 try
                 {
-                    await scheduleMethod();
+                    scheduleMethod.Invoke();
                     _interval = Settings.SuccessInterval;
                 }
                 catch (Exception e)
@@ -77,10 +79,10 @@ namespace MethodScheduler.Helpers
                 }
                 finally
                 {
-                    if (Settings.ThrowException.Equals(true))
+                    if (Settings.ThrowException.IsTrue() && failure.IsTrue())
                         throw new Exception($"{error}");
 
-                    if (Settings.DisableOnFailure.Equals(true) && failure.Equals(true))
+                    if (Settings.DisableOnFailure.IsTrue() && failure.IsTrue())
                         _timer.Change(Timeout.Infinite, Timeout.Infinite);
                     else _timer.Change(_interval.MinutesToMs(), Timeout.Infinite);
                 }
@@ -90,14 +92,85 @@ namespace MethodScheduler.Helpers
         /// <summary>
         ///     Start methods scheduler
         /// </summary>
-        /// <param name="scheduleMethods"></param>
+        /// <param name="scheduleMethods">Schedule methods</param>
+        /// <remarks></remarks>
+        protected void StartScheduler(IEnumerable<Action> scheduleMethods)
+        {
+            var error = new StringBuilder();
+            var failure = false;
+
+            _timer = new Timer(_ =>
+            {
+                try
+                {
+                    Task.WaitAll(scheduleMethods.Select(m => Task.Factory.StartNew(m.Invoke)).ToArray());
+
+                    _interval = Settings.SuccessInterval;
+                }
+                catch (Exception e)
+                {
+                    failure = true;
+                    error.AppendLine(e.ToString());
+                    _interval = Settings.FailInterval;
+                }
+                finally
+                {
+                    if (Settings.ThrowException.IsTrue() && failure.IsTrue())
+                        throw new Exception($"{error}");
+
+                    if (Settings.DisableOnFailure.IsTrue() && failure.IsTrue())
+                        _timer.Change(Timeout.Infinite, Timeout.Infinite);
+                    else _timer.Change(_interval.MinutesToMs(), Timeout.Infinite);
+                }
+            }, null, _interval.MinutesToMs(), Timeout.Infinite);
+        }
+
+        /// <summary>
+        ///     Start methods scheduler
+        /// </summary>
+        /// <param name="scheduleMethod">Schedule method</param>
+        /// <remarks></remarks>
+        protected void StartScheduler(Func<Task> scheduleMethod)
+        {
+            var error = new StringBuilder();
+            var failure = false;
+
+            _timer = new Timer(async _ =>
+            {
+                try
+                {
+                    await scheduleMethod.Invoke();
+                    _interval = Settings.SuccessInterval;
+                }
+                catch (Exception e)
+                {
+                    failure = true;
+                    error.AppendLine(e.ToString());
+                    _interval = Settings.FailInterval;
+                }
+                finally
+                {
+                    if (Settings.ThrowException.IsTrue() && failure.IsTrue())
+                        throw new Exception($"{error}");
+
+                    if (Settings.DisableOnFailure.IsTrue() && failure.IsTrue())
+                        _timer.Change(Timeout.Infinite, Timeout.Infinite);
+                    else _timer.Change(_interval.MinutesToMs(), Timeout.Infinite);
+                }
+            }, null, _interval.MinutesToMs(), Timeout.Infinite);
+        }
+
+        /// <summary>
+        ///     Start methods scheduler
+        /// </summary>
+        /// <param name="scheduleMethods">Schedule methods</param>
         /// <remarks></remarks>
         protected void StartScheduler(IEnumerable<Func<Task>> scheduleMethods)
         {
             var error = new StringBuilder();
             var failure = false;
 
-            _timer = new Timer(async state =>
+            _timer = new Timer(async _ =>
             {
                 try
                 {
@@ -115,10 +188,10 @@ namespace MethodScheduler.Helpers
                 }
                 finally
                 {
-                    if (Settings.ThrowException.Equals(true))
+                    if (Settings.ThrowException.IsTrue() && failure.IsTrue())
                         throw new Exception($"{error}");
 
-                    if (Settings.DisableOnFailure.Equals(true) && failure.Equals(true))
+                    if (Settings.DisableOnFailure.IsTrue() && failure.IsTrue())
                         _timer.Change(Timeout.Infinite, Timeout.Infinite);
                     else _timer.Change(_interval.MinutesToMs(), Timeout.Infinite);
                 }
