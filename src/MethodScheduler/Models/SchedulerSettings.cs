@@ -39,7 +39,7 @@ namespace MethodScheduler.Models
         public bool DisableOnFailure { get; set; } = false;
 
         /// <summary>
-        ///     Gets or sets a value indicating whether throw exception in case when an error occured.
+        ///     Gets or sets a value indicating whether throw exception in case when an error occurred.
         /// </summary>
         /// <value>
         ///     <see langword="true" /> if the error will be thrown; otherwise, <see langword="false" />.
