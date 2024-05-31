@@ -1,3 +1,6 @@
+### **v1.0.6.7128** 
+-> Update lib extension version. <br/>
+
 ### **v1.0.5.8002** 
 -> Add `Start` method with `Action`.
 
