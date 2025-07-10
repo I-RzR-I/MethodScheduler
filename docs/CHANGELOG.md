@@ -1,3 +1,13 @@
+### v**2.0.0.7854** [[RzR](mailto:108324929+I-RzR-I@users.noreply.github.com)] 10-07-2025
+* [5431bf0] (RzR) -> Auto commit uncommited files
+* [0f62164] (RzR) -> Add new version genetate scripts.
+* [15105b3] (RzR) -> Adjust using docs.
+* [2936df2] (RzR) -> Add new methods for executing code changes.
+* [40dc74f] (RzR) -> Add the `stopAfterXIteration` param to `MultipleScheduler` implementation.
+* [19857f3] (RzR) -> Add `StopAfterXIteration` param, integrate timer stop.
+* [3fe69da] (RzR) -> Add bool extension method `AllTrue` and tests.
+* [a7fbef0] (RzR) -> Upgrade the `DomainCommonExtensions` package version.
+
 ### **v1.1.0.0** 
 -> Upgrade reference package version. <br/>
 -> Remove vulnerable package 'System.Linq.Dynamic.Core' and upgrade version in test project. Fix CVE-2024-51417. <br/>

@@ -32,9 +32,9 @@ namespace TestConsoleCode
         /// </summary>
         /// <returns></returns>
         /// <remarks></remarks>
-        public static async Task<bool> InitAsync()
+        public static async Task<bool> InitAsync(string message = null)
         {
-            Console.WriteLine($"async WriteTestLog.InitAsync-{DateTime.Now.FormatToString("yyyy-MM-dd-HH-mm-ss")}");
+            Console.WriteLine($"async WriteTestLog.InitAsync-{DateTime.Now.FormatToString("yyyy-MM-dd-HH-mm-ss")}\t{message}");
             Thread.Sleep(TimeSpan.FromMinutes(2));
 
             // throw new Exception("10-11-12");
@@ -46,9 +46,9 @@ namespace TestConsoleCode
         /// </summary>
         /// <returns></returns>
         /// <remarks></remarks>
-        public static async Task<bool> Init2Async()
+        public static async Task<bool> Init2Async(string message = null)
         {
-            Console.WriteLine($"async WriteTestLog.Init2Async-{DateTime.Now.FormatToString("yyyy-MM-dd-HH-mm-ss")}");
+            Console.WriteLine($"async WriteTestLog.Init2Async-{DateTime.Now.FormatToString("yyyy-MM-dd-HH-mm-ss")}\t{message}");
 
             return await Task.FromResult(true);
         }
@@ -58,10 +58,10 @@ namespace TestConsoleCode
         /// </summary>
         /// <returns></returns>
         /// <remarks></remarks>
-        public static async Task InitTask1Async()
+        public static async Task InitTask1Async(string message = null)
         {
             Console.WriteLine(
-                $"async WriteTestLog.InitTask1Async-{DateTime.Now.FormatToString("yyyy-MM-dd-HH-mm-ss")}");
+                $"async WriteTestLog.InitTask1Async-{DateTime.Now.FormatToString("yyyy-MM-dd-HH-mm-ss")}\t{message}");
             Thread.Sleep(TimeSpan.FromMinutes(0.5));
             await Task.CompletedTask;
         }
@@ -71,10 +71,10 @@ namespace TestConsoleCode
         /// </summary>
         /// <returns></returns>
         /// <remarks></remarks>
-        public static async Task InitTask2Async()
+        public static async Task InitTask2Async(string message = null)
         {
             Console.WriteLine(
-                $"async WriteTestLog.InitTask2Async-{DateTime.Now.FormatToString("yyyy-MM-dd-HH-mm-ss")}");
+                $"async WriteTestLog.InitTask2Async-{DateTime.Now.FormatToString("yyyy-MM-dd-HH-mm-ss")}\t{message}");
             Thread.Sleep(TimeSpan.FromMinutes(1));
             await Task.CompletedTask;
         }
@@ -84,10 +84,10 @@ namespace TestConsoleCode
         /// </summary>
         /// <returns></returns>
         /// <remarks></remarks>
-        public static async Task InitTask3Async()
+        public static async Task InitTask3Async(string message = null)
         {
             Console.WriteLine(
-                $"async WriteTestLog.InitTask3Async-{DateTime.Now.FormatToString("yyyy-MM-dd-HH-mm-ss")}");
+                $"async WriteTestLog.InitTask3Async-{DateTime.Now.FormatToString("yyyy-MM-dd-HH-mm-ss")}\t{message}");
             Thread.Sleep(TimeSpan.FromMinutes(2));
             await Task.CompletedTask;
         }

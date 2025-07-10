@@ -45,6 +45,8 @@ namespace TestConsoleCode
             if (args.Any())
             {
                 if (args[0] == "1") Run(service);
+                if (args[0] == "1.1") Run2(service);
+                if (args[0] == "1.2") Run3(service);
                 if (args[0] == "2") RunMultiple(service);
                 if (args[0] == "3") RunMultipleTask(service);
                 if (args[0] == "4") RunMultipleInstance(service);
@@ -53,6 +55,7 @@ namespace TestConsoleCode
             {
                 RunProcess();
             }
+
 
             Console.ReadKey();
         }
@@ -68,13 +71,37 @@ namespace TestConsoleCode
 
             var obj1 = new WriteTestLog();
 
-            service.Start(WriteTestLog.InitAsync, settings);
-            service.Start(WriteTestLog.Init2Async, new SchedulerSettings
+            service.Start(() => { _ = WriteTestLog.InitAsync("run infinite"); }, settings);
+            service.Start(() => { _ = WriteTestLog.Init2Async("run infinite"); }, new SchedulerSettings
             {
                 DisableOnFailure = false,
                 SuccessInterval = 0.5,
                 FailInterval = 0.3
             });
+        }
+
+        private static void Run2(IMultipleScheduler service)
+        {
+            var settings = new SchedulerSettings
+            {
+                DisableOnFailure = true,
+                SuccessInterval = 0.3,
+                FailInterval = 0.3
+            };
+
+
+            service.Start(() => { _ = WriteTestLog.Init2Async("run only x5"); }, settings, 5);
+        }
+        private static void Run3(IMultipleScheduler service)
+        {
+            var settings = new SchedulerSettings
+            {
+                DisableOnFailure = true,
+                SuccessInterval = 0.3,
+                FailInterval = 0.3
+            };
+            
+            service.Start(() => { _ = WriteTestLog.Init2Async("run infinite"); }, settings);
         }
 
         private static void RunMultiple(IMultipleScheduler service)
@@ -89,8 +116,8 @@ namespace TestConsoleCode
             var obj1 = new WriteTestLog();
             service.Start(new List<Func<Task<bool>>>
             {
-                WriteTestLog.InitAsync,
-                WriteTestLog.Init2Async
+                () => WriteTestLog.InitAsync("run infinite"),
+                () => WriteTestLog.Init2Async("run infinite")
             }, settings);
         }
 
@@ -106,9 +133,9 @@ namespace TestConsoleCode
             var obj1 = new WriteTestLog();
             service.Start(new List<Func<Task>>
             {
-                WriteTestLog.InitTask1Async,
-                WriteTestLog.InitTask2Async,
-                WriteTestLog.InitTask3Async
+                () => WriteTestLog.InitTask1Async("run infinite"),
+                () => WriteTestLog.InitTask2Async("run infinite"),
+                () => WriteTestLog.InitTask3Async("run infinite"),
             }, settings);
         }
 
@@ -137,6 +164,20 @@ namespace TestConsoleCode
                 process1.Start();
             }
 
+            using (var process11 = new Process())
+            {
+                process11.StartInfo.FileName = $@"{initPath}TestConsoleCode.exe";
+                process11.StartInfo.Arguments = "1.1";
+                process11.Start();
+            }
+
+            using (var process12 = new Process())
+            {
+                process12.StartInfo.FileName = $@"{initPath}TestConsoleCode.exe";
+                process12.StartInfo.Arguments = "1.2";
+                process12.Start();
+            }
+
             using (var process2 = new Process())
             {
                 process2.StartInfo.FileName = $@"{initPath}TestConsoleCode.exe";
@@ -151,7 +192,7 @@ namespace TestConsoleCode
                 process3.Start();
             }
 
-            using var process4 = new Process
+            using var process4 = new Process()
             {
                 StartInfo = { FileName = $@"{initPath}TestConsoleCode.exe", Arguments = "4" }
             };
