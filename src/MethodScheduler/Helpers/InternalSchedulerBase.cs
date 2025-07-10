@@ -22,7 +22,9 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using DomainCommonExtensions.CommonExtensions.TypeParam;
 using DomainCommonExtensions.DataTypeExtensions;
+using MethodScheduler.Extensions;
 using MethodScheduler.Models;
 
 // ReSharper disable AsyncVoidLambda
@@ -55,6 +57,16 @@ namespace MethodScheduler.Helpers
         protected SchedulerSettings Settings;
 
         /// <summary>
+        ///     The stop execution after x iteration.
+        ///     <remarks>
+        ///         If value is NULL, the execution will not stop
+        ///         until <seealso cref="InternalSchedulerBase.StopScheduler"/> or
+        ///         <seealso cref="MultipleScheduler.Stop"/> will be invoked.
+        ///     </remarks>
+        /// </summary>
+        protected int? StopAfterXIteration;
+
+        /// <summary>
         ///     Start methods scheduler
         /// </summary>
         /// <param name="scheduleMethod">Schedule method</param>
@@ -63,6 +75,7 @@ namespace MethodScheduler.Helpers
         {
             var error = new StringBuilder();
             var failure = false;
+            var executionIteration = 0;
 
             _timer = new Timer(_ =>
             {
@@ -79,12 +92,9 @@ namespace MethodScheduler.Helpers
                 }
                 finally
                 {
-                    if (Settings.ThrowException.IsTrue() && failure.IsTrue())
-                        throw new Exception($"{error}");
-
-                    if (Settings.DisableOnFailure.IsTrue() && failure.IsTrue())
-                        _timer.Change(Timeout.Infinite, Timeout.Infinite);
-                    else _timer.Change(_interval.MinutesToMs(), Timeout.Infinite);
+                    if (StopAfterXIteration.IsNullOrZero().IsFalse())
+                        executionIteration++;
+                    FinallyThrowOrChangeTimer(failure, error, executionIteration);
                 }
             }, null, _interval.MinutesToMs(), Timeout.Infinite);
         }
@@ -98,6 +108,7 @@ namespace MethodScheduler.Helpers
         {
             var error = new StringBuilder();
             var failure = false;
+            var executionIteration = 0;
 
             _timer = new Timer(_ =>
             {
@@ -115,12 +126,9 @@ namespace MethodScheduler.Helpers
                 }
                 finally
                 {
-                    if (Settings.ThrowException.IsTrue() && failure.IsTrue())
-                        throw new Exception($"{error}");
-
-                    if (Settings.DisableOnFailure.IsTrue() && failure.IsTrue())
-                        _timer.Change(Timeout.Infinite, Timeout.Infinite);
-                    else _timer.Change(_interval.MinutesToMs(), Timeout.Infinite);
+                    if (StopAfterXIteration.IsNullOrZero().IsFalse())
+                        executionIteration++;
+                    FinallyThrowOrChangeTimer(failure, error, executionIteration);
                 }
             }, null, _interval.MinutesToMs(), Timeout.Infinite);
         }
@@ -134,6 +142,7 @@ namespace MethodScheduler.Helpers
         {
             var error = new StringBuilder();
             var failure = false;
+            var executionIteration = 0;
 
             _timer = new Timer(async _ =>
             {
@@ -150,12 +159,9 @@ namespace MethodScheduler.Helpers
                 }
                 finally
                 {
-                    if (Settings.ThrowException.IsTrue() && failure.IsTrue())
-                        throw new Exception($"{error}");
-
-                    if (Settings.DisableOnFailure.IsTrue() && failure.IsTrue())
-                        _timer.Change(Timeout.Infinite, Timeout.Infinite);
-                    else _timer.Change(_interval.MinutesToMs(), Timeout.Infinite);
+                    if (StopAfterXIteration.IsNullOrZero().IsFalse())
+                        executionIteration++;
+                    FinallyThrowOrChangeTimer(failure, error, executionIteration);
                 }
             }, null, _interval.MinutesToMs(), Timeout.Infinite);
         }
@@ -169,6 +175,7 @@ namespace MethodScheduler.Helpers
         {
             var error = new StringBuilder();
             var failure = false;
+            var executionIteration = 0;
 
             _timer = new Timer(async _ =>
             {
@@ -188,12 +195,9 @@ namespace MethodScheduler.Helpers
                 }
                 finally
                 {
-                    if (Settings.ThrowException.IsTrue() && failure.IsTrue())
-                        throw new Exception($"{error}");
-
-                    if (Settings.DisableOnFailure.IsTrue() && failure.IsTrue())
-                        _timer.Change(Timeout.Infinite, Timeout.Infinite);
-                    else _timer.Change(_interval.MinutesToMs(), Timeout.Infinite);
+                    if (StopAfterXIteration.IsNullOrZero().IsFalse())
+                        executionIteration++;
+                    FinallyThrowOrChangeTimer(failure, error, executionIteration);
                 }
             }, null, _interval.MinutesToMs(), Timeout.Infinite);
         }
@@ -205,6 +209,26 @@ namespace MethodScheduler.Helpers
         protected void StopScheduler()
         {
             _timer?.Change(Timeout.Infinite, Timeout.Infinite);
+        }
+
+        /// <summary>
+        ///     Finally throw or change timer value.
+        /// </summary>
+        /// <exception cref="Exception">Thrown when an exception error condition occurs.</exception>
+        /// <param name="isFailure">True if is failure, false if not.</param>
+        /// <param name="error">The error.</param>
+        /// <param name="executionIteration">The execution iteration.</param>
+        private void FinallyThrowOrChangeTimer(bool isFailure, StringBuilder error, int executionIteration)
+        {
+            if (BooleanExtensions.AllTrue(Settings.ThrowException, isFailure).IsTrue())
+                throw new Exception($"{error}");
+
+            if (BooleanExtensions.AllTrue(Settings.DisableOnFailure, isFailure).IsTrue())
+                StopScheduler();
+            else _timer.Change(_interval.MinutesToMs(), Timeout.Infinite);
+
+            if (StopAfterXIteration.IsNullOrZero().IsFalse() && executionIteration >= StopAfterXIteration.IfIsNull(0))
+                StopScheduler();
         }
     }
 }
