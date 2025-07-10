@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.32510.428
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36109.1 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MethodScheduler", "MethodScheduler\MethodScheduler.csproj", "{1BBCAB0C-B0CB-45BB-B3D7-DDE95279B121}"
 EndProject
@@ -21,6 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MethodSchedulerTest", "tests\MethodSchedulerTest\MethodSchedulerTest.csproj", "{BF5A61E8-E601-4E58-BEA3-C99AF054D7C1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{C2011BCE-EF26-486E-98C4-1AFCA7B6EB3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2011BCE-EF26-486E-98C4-1AFCA7B6EB3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C2011BCE-EF26-486E-98C4-1AFCA7B6EB3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF5A61E8-E601-4E58-BEA3-C99AF054D7C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF5A61E8-E601-4E58-BEA3-C99AF054D7C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF5A61E8-E601-4E58-BEA3-C99AF054D7C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF5A61E8-E601-4E58-BEA3-C99AF054D7C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,16 +52,17 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{44ABBBF7-AC66-4EAB-A8A6-728954A7263A} = {E737BE4D-6DFF-4A67-A3D9-2AC58BFBBC07}
 		{C2011BCE-EF26-486E-98C4-1AFCA7B6EB3B} = {E737BE4D-6DFF-4A67-A3D9-2AC58BFBBC07}
+		{BF5A61E8-E601-4E58-BEA3-C99AF054D7C1} = {E737BE4D-6DFF-4A67-A3D9-2AC58BFBBC07}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		BuildVersion_BuildAction = ReBuild
-		SolutionGuid = {4B5BD8B8-58AD-47B4-B85A-E7242D47B9FE}
-		BuildVersion_BuildVersioningStyle = None.None.Increment.TimeStamp
-		BuildVersion_UpdateAssemblyVersion = True
-		BuildVersion_UpdateFileVersion = True
-		BuildVersion_StartDate = 2022/8/5
-		BuildVersion_AssemblyInfoFilename = shared\GeneralAssemblyInfo.cs
-		BuildVersion_ConfigurationName = Release
 		BuildVersion_UseUniversalClock = True
+		BuildVersion_ConfigurationName = Release
+		BuildVersion_AssemblyInfoFilename = shared\GeneralAssemblyInfo.cs
+		BuildVersion_StartDate = 2022/8/5
+		BuildVersion_UpdateFileVersion = True
+		BuildVersion_UpdateAssemblyVersion = True
+		BuildVersion_BuildVersioningStyle = None.None.Increment.TimeStamp
+		SolutionGuid = {4B5BD8B8-58AD-47B4-B85A-E7242D47B9FE}
+		BuildVersion_BuildAction = ReBuild
 	EndGlobalSection
 EndGlobal
