@@ -58,13 +58,23 @@ namespace MethodScheduler.Helpers
 
         /// <summary>
         ///     The stop execution after x iteration.
-        ///     <remarks>
-        ///         If value is NULL, the execution will not stop
-        ///         until <seealso cref="InternalSchedulerBase.StopScheduler"/> or
-        ///         <seealso cref="MultipleScheduler.Stop"/> will be invoked.
-        ///     </remarks>
         /// </summary>
+        /// <remarks>
+        ///     If value is NULL, the execution will not stop
+        ///     until <seealso cref="InternalSchedulerBase.StopScheduler"/> or
+        ///     <seealso cref="MultipleScheduler.Stop"/> will be invoked.
+        /// </remarks>
         protected int? StopAfterXIteration;
+
+        /// <summary>
+        ///     True to force stop after the first successful execution.
+        /// </summary>
+        /// <remarks>
+        ///     If there is no error at the current execution
+        ///     and this field is set to 'true',
+        ///     the scheduler will stop the infinite execution.
+        /// </remarks>
+        protected bool ForceStopAfterFirstSuccessExecution;
 
         /// <summary>
         ///     Start methods scheduler
@@ -212,7 +222,7 @@ namespace MethodScheduler.Helpers
         }
 
         /// <summary>
-        ///     Finally throw or change timer value.
+        ///     Finally, throw exception or change timer value.
         /// </summary>
         /// <exception cref="Exception">Thrown when an exception error condition occurs.</exception>
         /// <param name="isFailure">True if is failure, false if not.</param>
@@ -228,6 +238,9 @@ namespace MethodScheduler.Helpers
             else _timer.Change(_interval.MinutesToMs(), Timeout.Infinite);
 
             if (StopAfterXIteration.IsNullOrZero().IsFalse() && executionIteration >= StopAfterXIteration.IfIsNull(0))
+                StopScheduler();
+
+            if (isFailure.IsFalse() && ForceStopAfterFirstSuccessExecution.IsTrue())
                 StopScheduler();
         }
     }
