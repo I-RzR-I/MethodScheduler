@@ -1,3 +1,8 @@
+### **v2.1.0.8378** [[RzR](mailto:108324929+I-RzR-I@users.noreply.github.com)] 15-07-2025
+* [a0aefb6] (RzR) -> Auto commit uncommited files
+* [c4a5f96] (RzR) -> Add the `forceStopAfterFirstSuccessExecution` param to `MultipleScheduler` implementation.
+* [be9c062] (RzR) -> Add `ForceStopAfterFirstSuccessExecution` parameter and integrate the timer stop when execution was successful.
+
 ### v**2.0.0.7854** [[RzR](mailto:108324929+I-RzR-I@users.noreply.github.com)] 10-07-2025
 * [5431bf0] (RzR) -> Auto commit uncommited files
 * [0f62164] (RzR) -> Add new version genetate scripts.

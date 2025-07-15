@@ -9,8 +9,9 @@ Scheduler has a few available settings:
 * `DisableOnFailure` -> Disable on failure
 * `ThrowException` -> Throw exeption 
 
-Also, you can find a new property `StopAfterXIteration` which means -> Stop the schedule execution when the specified number is reached.
-When `StopAfterXIteration` has a value, the scheduler will run until it reaches the limit, overwise the scheduler will run infinitely.
+Also, you can find a new property `StopAfterXIteration` and `ForceStopAfterFirstSuccessExecution`.
+* `StopAfterXIteration` -> Stop the schedule execution when the specified number is reached. When `StopAfterXIteration` has a value, the scheduler will run until it reaches the limit, overwise the scheduler will run infinitely.
+* `ForceStopAfterFirstSuccessExecution` -> If there is no error at the current execution and this field is set to 'true', the scheduler will stop the infinite execution.
 
 > In case you using .NET | .NET Core
 
