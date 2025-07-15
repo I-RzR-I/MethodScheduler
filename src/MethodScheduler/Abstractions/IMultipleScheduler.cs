@@ -33,38 +33,82 @@ namespace MethodScheduler.Abstractions
         /// <summary>
         ///     Start new schedule
         /// </summary>
-        /// <param name="scheduleMethod">Required. Method to schedule</param>
-        /// <param name="settings">Required. Scheduler settings</param>
-        /// <param name="stopAfterXIteration">Stop the schedule execution when the specified number is reached</param>
+        /// <param name="scheduleMethod">Required. Method to schedule.</param>
+        /// <param name="settings">Required. Scheduler settings.</param>
+        /// <param name="stopAfterXIteration">
+        ///     Stop the schedule execution when the specified number is reached.
+        ///     Default value is 'null' (scheduler will not stop).
+        /// </param>
+        /// <param name="forceStopAfterFirstSuccessExecution">
+        ///     Force stop scheduler after the first successful execution.
+        ///     Default value is 'false'.
+        /// </param>
         /// <remarks></remarks>
-        void Start(Action scheduleMethod, SchedulerSettings settings, int? stopAfterXIteration = null);
+        void Start(
+            Action scheduleMethod, 
+            SchedulerSettings settings, 
+            int? stopAfterXIteration = null,
+            bool forceStopAfterFirstSuccessExecution = false);
 
         /// <summary>
         ///     Start new schedule
         /// </summary>
-        /// <param name="scheduleMethods">Required. Methods to schedule</param>
-        /// <param name="settings">Required. Scheduler settings</param>
-        /// <param name="stopAfterXIteration">Stop the schedule execution when the specified number is reached</param>
+        /// <param name="scheduleMethods">Required. Methods to schedule.</param>
+        /// <param name="settings">Required. Scheduler settings.</param>
+        /// <param name="stopAfterXIteration">
+        ///     Stop the schedule execution when the specified number is reached.
+        ///     Default value is 'null' (scheduler will not stop).
+        /// </param>
+        /// <param name="forceStopAfterFirstSuccessExecution">
+        ///     Force stop scheduler after the first successful execution.
+        ///     Default value is 'false'.
+        /// </param>
         /// <remarks></remarks>
-        void Start(IEnumerable<Action> scheduleMethods, SchedulerSettings settings, int? stopAfterXIteration = null);
+        void Start(
+            IEnumerable<Action> scheduleMethods,
+            SchedulerSettings settings, 
+            int? stopAfterXIteration = null,
+            bool forceStopAfterFirstSuccessExecution = false);
 
         /// <summary>
         ///     Start new schedule
         /// </summary>
-        /// <param name="scheduleMethod">Required. Method to schedule</param>
-        /// <param name="settings">Required. Scheduler settings</param>
-        /// <param name="stopAfterXIteration">Stop the schedule execution when the specified number is reached</param>
+        /// <param name="scheduleMethod">Required. Method to schedule.</param>
+        /// <param name="settings">Required. Scheduler settings.</param>
+        /// <param name="stopAfterXIteration">
+        ///     Stop the schedule execution when the specified number is reached.
+        ///     Default value is 'null' (scheduler will not stop).
+        /// </param>
+        /// <param name="forceStopAfterFirstSuccessExecution">
+        ///     Force stop scheduler after the first successful execution.
+        ///     Default value is 'false'.
+        /// </param>
         /// <remarks></remarks>
-        void Start(Func<Task> scheduleMethod, SchedulerSettings settings, int? stopAfterXIteration = null);
+        void Start(
+            Func<Task> scheduleMethod, 
+            SchedulerSettings settings, 
+            int? stopAfterXIteration = null,
+            bool forceStopAfterFirstSuccessExecution = false);
 
         /// <summary>
         ///     Start new schedule
         /// </summary>
-        /// <param name="scheduleMethods">Required. Methods to schedule</param>
-        /// <param name="settings">Required. Scheduler settings</param>
-        /// <param name="stopAfterXIteration">Stop the schedule execution when the specified number is reached</param>
+        /// <param name="scheduleMethods">Required. Methods to schedule.</param>
+        /// <param name="settings">Required. Scheduler settings.</param>
+        /// <param name="stopAfterXIteration">
+        ///     Stop the schedule execution when the specified number is reached.
+        ///     Default value is 'null' (scheduler will not stop).
+        /// </param>
+        /// <param name="forceStopAfterFirstSuccessExecution">
+        ///     Force stop scheduler after the first successful execution.
+        ///     Default value is 'false'.
+        /// </param>
         /// <remarks></remarks>
-        void Start(IEnumerable<Func<Task>> scheduleMethods, SchedulerSettings settings, int? stopAfterXIteration = null);
+        void Start(
+            IEnumerable<Func<Task>> scheduleMethods, 
+            SchedulerSettings settings, 
+            int? stopAfterXIteration = null,
+            bool forceStopAfterFirstSuccessExecution = false);
 
         /// <summary>
         ///     Stop scheduler

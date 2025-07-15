@@ -54,14 +54,26 @@ namespace MethodScheduler.Helpers
         /// <summary>
         ///     Initializes a new instance of the <see cref="MultipleScheduler" /> class.
         /// </summary>
-        /// <param name="scheduleMethod">Required. Method to schedule</param>
-        /// <param name="settings">Required. Scheduler settings</param>
-        /// <param name="stopAfterXIteration">Stop the schedule execution when the specified number is reached</param>
+        /// <param name="scheduleMethod">Required. Method to schedule.</param>
+        /// <param name="settings">Required. Scheduler settings.</param>
+        /// <param name="stopAfterXIteration">
+        ///     Stop the schedule execution when the specified number is reached.
+        ///     Default value is 'null' (scheduler will not stop).
+        /// </param>
+        /// <param name="forceStopAfterFirstSuccessExecution">
+        ///     Force stop scheduler after the first successful execution.
+        ///     Default value is 'false'.
+        /// </param>
         /// <remarks></remarks>
-        private MultipleScheduler(Action scheduleMethod, SchedulerSettings settings, int? stopAfterXIteration = null)
+        private MultipleScheduler(
+            Action scheduleMethod, 
+            SchedulerSettings settings, 
+            int? stopAfterXIteration = null,
+            bool forceStopAfterFirstSuccessExecution = false)
         {
             base.Settings = settings;
             base.StopAfterXIteration = stopAfterXIteration;
+            base.ForceStopAfterFirstSuccessExecution = forceStopAfterFirstSuccessExecution;
 
             base.StartScheduler(scheduleMethod);
         }
@@ -69,14 +81,26 @@ namespace MethodScheduler.Helpers
         /// <summary>
         ///     Initializes a new instance of the <see cref="MultipleScheduler" /> class.
         /// </summary>
-        /// <param name="scheduleMethods">Required. Methods to schedule</param>
-        /// <param name="settings">Required. Scheduler settings</param>
-        /// <param name="stopAfterXIteration">Stop the schedule execution when the specified number is reached</param>
+        /// <param name="scheduleMethods">Required. Methods to schedule.</param>
+        /// <param name="settings">Required. Scheduler settings.</param>
+        /// <param name="stopAfterXIteration">
+        ///     Stop the schedule execution when the specified number is reached.
+        ///     Default value is 'null' (scheduler will not stop).
+        /// </param>
+        /// <param name="forceStopAfterFirstSuccessExecution">
+        ///     Force stop scheduler after the first successful execution.
+        ///     Default value is 'false'.
+        /// </param>
         /// <remarks></remarks>
-        private MultipleScheduler(IEnumerable<Action> scheduleMethods, SchedulerSettings settings, int? stopAfterXIteration = null)
+        private MultipleScheduler(
+            IEnumerable<Action> scheduleMethods, 
+            SchedulerSettings settings, 
+            int? stopAfterXIteration = null,
+            bool forceStopAfterFirstSuccessExecution = false)
         {
             base.Settings = settings;
             base.StopAfterXIteration = stopAfterXIteration;
+            base.ForceStopAfterFirstSuccessExecution = forceStopAfterFirstSuccessExecution;
 
             base.StartScheduler(scheduleMethods);
         }
@@ -84,14 +108,26 @@ namespace MethodScheduler.Helpers
         /// <summary>
         ///     Initializes a new instance of the <see cref="MultipleScheduler" /> class.
         /// </summary>
-        /// <param name="scheduleMethod">Required. Method to schedule</param>
-        /// <param name="settings">Required. Scheduler settings</param>
-        /// <param name="stopAfterXIteration">Stop the schedule execution when the specified number is reached</param>
+        /// <param name="scheduleMethod">Required. Method to schedule.</param>
+        /// <param name="settings">Required. Scheduler settings.</param>
+        /// <param name="stopAfterXIteration">
+        ///     Stop the schedule execution when the specified number is reached.
+        ///     Default value is 'null' (scheduler will not stop).
+        /// </param>
+        /// <param name="forceStopAfterFirstSuccessExecution">
+        ///     Force stop scheduler after the first successful execution.
+        ///     Default value is 'false'.
+        /// </param>
         /// <remarks></remarks>
-        private MultipleScheduler(Func<Task> scheduleMethod, SchedulerSettings settings, int? stopAfterXIteration = null)
+        private MultipleScheduler(
+            Func<Task> scheduleMethod, 
+            SchedulerSettings settings, 
+            int? stopAfterXIteration = null,
+            bool forceStopAfterFirstSuccessExecution = false)
         {
             base.Settings = settings;
             base.StopAfterXIteration = stopAfterXIteration;
+            base.ForceStopAfterFirstSuccessExecution = forceStopAfterFirstSuccessExecution;
 
             base.StartScheduler(scheduleMethod);
         }
@@ -99,44 +135,72 @@ namespace MethodScheduler.Helpers
         /// <summary>
         ///     Initializes a new instance of the <see cref="MultipleScheduler" /> class.
         /// </summary>
-        /// <param name="scheduleMethods">Required. Methods to schedule</param>
-        /// <param name="settings">Required. Scheduler settings</param>
-        /// <param name="stopAfterXIteration">Stop the schedule execution when the specified number is reached</param>
+        /// <param name="scheduleMethods">Required. Methods to schedule.</param>
+        /// <param name="settings">Required. Scheduler settings.</param>
+        /// <param name="stopAfterXIteration">
+        ///     Stop the schedule execution when the specified number is reached.
+        ///     Default value is 'null' (scheduler will not stop).
+        /// </param>
+        /// <param name="forceStopAfterFirstSuccessExecution">
+        ///     Force stop scheduler after the first successful execution.
+        ///     Default value is 'false'.
+        /// </param>
         /// <remarks></remarks>
-        private MultipleScheduler(IEnumerable<Func<Task>> scheduleMethods, SchedulerSettings settings, int? stopAfterXIteration = null)
+        private MultipleScheduler(
+            IEnumerable<Func<Task>> scheduleMethods, 
+            SchedulerSettings settings, 
+            int? stopAfterXIteration = null,
+            bool forceStopAfterFirstSuccessExecution = false)
         {
             base.Settings = settings;
             base.StopAfterXIteration = stopAfterXIteration;
+            base.ForceStopAfterFirstSuccessExecution = forceStopAfterFirstSuccessExecution;
 
             base.StartScheduler(scheduleMethods);
         }
 
         /// <inheritdoc />
-        public void Start(Action scheduleMethod, SchedulerSettings settings, int? stopAfterXIteration = null)
+        public void Start(
+            Action scheduleMethod, 
+            SchedulerSettings settings, 
+            int? stopAfterXIteration = null,
+            bool forceStopAfterFirstSuccessExecution = false)
         {
             if (Queue.IsNull()) Queue = new List<MultipleScheduler>();
-            Queue.Add(new MultipleScheduler(scheduleMethod, settings, stopAfterXIteration));
+            Queue.Add(new MultipleScheduler(scheduleMethod, settings, stopAfterXIteration, forceStopAfterFirstSuccessExecution));
         }
 
         /// <inheritdoc />
-        public void Start(IEnumerable<Action> scheduleMethods, SchedulerSettings settings, int? stopAfterXIteration = null)
+        public void Start(
+            IEnumerable<Action> scheduleMethods, 
+            SchedulerSettings settings, 
+            int? stopAfterXIteration = null,
+            bool forceStopAfterFirstSuccessExecution = false)
         {
             if (Queue.IsNull()) Queue = new List<MultipleScheduler>();
-            Queue.Add(new MultipleScheduler(scheduleMethods, settings, stopAfterXIteration));
+            Queue.Add(new MultipleScheduler(scheduleMethods, settings, stopAfterXIteration, forceStopAfterFirstSuccessExecution));
         }
 
         /// <inheritdoc />
-        public void Start(Func<Task> scheduleMethod, SchedulerSettings settings, int? stopAfterXIteration = null)
+        public void Start(
+            Func<Task> scheduleMethod, 
+            SchedulerSettings settings, 
+            int? stopAfterXIteration = null,
+            bool forceStopAfterFirstSuccessExecution = false)
         {
             if (Queue.IsNull()) Queue = new List<MultipleScheduler>();
-            Queue.Add(new MultipleScheduler(scheduleMethod, settings, stopAfterXIteration));
+            Queue.Add(new MultipleScheduler(scheduleMethod, settings, stopAfterXIteration, forceStopAfterFirstSuccessExecution));
         }
 
         /// <inheritdoc />
-        public void Start(IEnumerable<Func<Task>> scheduleMethods, SchedulerSettings settings, int? stopAfterXIteration = null)
+        public void Start(
+            IEnumerable<Func<Task>> scheduleMethods, 
+            SchedulerSettings settings, 
+            int? stopAfterXIteration = null,
+            bool forceStopAfterFirstSuccessExecution = false)
         {
             if (Queue.IsNull()) Queue = new List<MultipleScheduler>();
-            Queue.Add(new MultipleScheduler(scheduleMethods, settings, stopAfterXIteration));
+            Queue.Add(new MultipleScheduler(scheduleMethods, settings, stopAfterXIteration, forceStopAfterFirstSuccessExecution));
         }
 
         /// <inheritdoc />

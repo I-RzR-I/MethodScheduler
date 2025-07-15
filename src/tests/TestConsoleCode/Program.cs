@@ -42,19 +42,20 @@ namespace TestConsoleCode
 
             var service = serviceProvider.GetService<IMultipleScheduler>();
 
-            if (args.Any())
-            {
-                if (args[0] == "1") Run(service);
-                if (args[0] == "1.1") Run2(service);
-                if (args[0] == "1.2") Run3(service);
-                if (args[0] == "2") RunMultiple(service);
-                if (args[0] == "3") RunMultipleTask(service);
-                if (args[0] == "4") RunMultipleInstance(service);
-            }
-            else
-            {
-                RunProcess();
-            }
+            //if (args.Any())
+            //{
+            //    if (args[0] == "1") Run(service);
+            //    if (args[0] == "1.1") Run2(service);
+            //    if (args[0] == "1.2") Run3(service);
+            //    if (args[0] == "2") RunMultiple(service);
+            //    if (args[0] == "3") RunMultipleTask(service);
+            //    if (args[0] == "4") RunMultipleInstance(service);
+            //}
+            //else
+            //{
+            //    RunProcess();
+            //}
+            Run_x5_Stop_OnSuccess(service);
 
 
             Console.ReadKey();
@@ -92,6 +93,20 @@ namespace TestConsoleCode
 
             service.Start(() => { _ = WriteTestLog.Init2Async("run only x5"); }, settings, 5);
         }
+
+        private static void Run_x5_Stop_OnSuccess(IMultipleScheduler service)
+        {
+            var settings = new SchedulerSettings
+            {
+                DisableOnFailure = true,
+                SuccessInterval = 0.3,
+                FailInterval = 0.3
+            };
+
+
+            service.Start(() => { _ = WriteTestLog.Init2Async("run only x5"); }, settings, 5, true);
+        }
+
         private static void Run3(IMultipleScheduler service)
         {
             var settings = new SchedulerSettings
