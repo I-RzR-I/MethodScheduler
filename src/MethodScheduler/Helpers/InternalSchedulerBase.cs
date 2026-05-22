@@ -24,19 +24,22 @@ using System.Threading;
 using System.Threading.Tasks;
 using DomainCommonExtensions.CommonExtensions.TypeParam;
 using DomainCommonExtensions.DataTypeExtensions;
-using MethodScheduler.Extensions;
-using MethodScheduler.Models;
+using RzR.Scheduling.RecurringJobs.Extensions;
+using RzR.Scheduling.RecurringJobs.Models;
 
 // ReSharper disable AsyncVoidLambda
 
 #endregion
 
-namespace MethodScheduler.Helpers
+namespace RzR.Scheduling.RecurringJobs.Helpers
 {
     /// <summary>
-    ///     Scheduler base
+    ///     Scheduler base.
     /// </summary>
-    /// <remarks></remarks>
+    /// <remarks>
+    ///     This class is obsolete. Use <see cref="MethodSchedulerService"/> instead.
+    /// </remarks>
+    [Obsolete("InternalSchedulerBase is obsolete. Use MethodSchedulerService and ScheduledJobOptions instead.", error: false)]
     public class InternalSchedulerBase
     {
         /// <summary>

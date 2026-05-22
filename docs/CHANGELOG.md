@@ -1,3 +1,13 @@
+### **v3.0.0.7953** [[RzR](mailto:108324929+I-RzR-I@users.noreply.github.com)] 22-05-2026
+* [DEV] - (RzR) -> Move runtime namespaces and package identity to RzR.Scheduling.RecurringJobs.
+* [DEV] - (RzR) -> Replace the `IMultipleScheduler` Start/Stop model with `IMethodScheduler`, `Schedule`, and async stop operations.
+* [DEV] - (RzR) -> Introduce `ScheduledJobOptions`, `IScheduledJob`, hosted scheduled task registration, and improved default scheduler behavior.
+* [DEV] - (RzR) -> Refresh the main project documentation to reflect the current RzR.Scheduling.RecurringJobs package and namespace.
+* [DEV] - (RzR) -> Rewrite the usage guide in a clearer, more humanized style around the current job-based API, including DI registration, scheduling, stopping jobs, hosted tasks, and non-DI usage.
+* [DEV] - (RzR) -> Add a dedicated migration guide for moving from v2.x to 3.x, covering renamed namespaces, updated types and methods, TimeSpan-based options, and the new stop model.
+* [DEV] - (RzR) -> Clarify the relationship between the legacy MethodScheduler package naming and the current runtime API so upgrades are easier to follow.
+* [DEV] - (RzR) -> Keep legacy MultipleScheduler and related v2 APIs as obsolete compatibility shims.
+
 ### **v2.1.0.8378** [[RzR](mailto:108324929+I-RzR-I@users.noreply.github.com)] 15-07-2025
 * [a0aefb6] (RzR) -> Auto commit uncommited files
 * [c4a5f96] (RzR) -> Add the `forceStopAfterFirstSuccessExecution` param to `MultipleScheduler` implementation.

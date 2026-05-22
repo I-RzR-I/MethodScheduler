@@ -19,11 +19,10 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using MethodScheduler.Helpers;
-using MethodScheduler.Models;
+using RzR.Scheduling.RecurringJobs.Helpers;
+using RzR.Scheduling.RecurringJobs.Models;
 
 #endregion
 

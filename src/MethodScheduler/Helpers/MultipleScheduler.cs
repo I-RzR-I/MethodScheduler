@@ -21,14 +21,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DomainCommonExtensions.CommonExtensions;
-using MethodScheduler.Abstractions;
-using MethodScheduler.Models;
+using RzR.Scheduling.RecurringJobs.Abstractions;
+using RzR.Scheduling.RecurringJobs.Models;
 
 #endregion
 
-namespace MethodScheduler.Helpers
+namespace RzR.Scheduling.RecurringJobs.Helpers
 {
     /// <inheritdoc cref="IMultipleScheduler" />
+    /// <remarks>
+    ///     This class is obsolete. Use <see cref="MethodSchedulerService"/> via
+    ///     <c>services.AddMethodScheduler()</c> instead.
+    /// </remarks>
+    [Obsolete("MultipleScheduler is obsolete. Use MethodSchedulerService (registered via AddMethodScheduler()) instead.", error: false)]
     public class MultipleScheduler : InternalSchedulerBase, IMultipleScheduler
     {
         /// <summary>

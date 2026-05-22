@@ -19,12 +19,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
-using MethodScheduler;
-using MethodScheduler.Abstractions;
-using MethodScheduler.Models;
 using Microsoft.Extensions.DependencyInjection;
+using RzR.Scheduling.RecurringJobs;
+using RzR.Scheduling.RecurringJobs.Abstractions;
+using RzR.Scheduling.RecurringJobs.Models;
 
 #endregion
 

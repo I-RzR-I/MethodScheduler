@@ -29,7 +29,7 @@ using System.Resources;
 
 [assembly: AssemblyCompany("RzR ®")]
 [assembly: AssemblyProduct("Method scheduler")]
-[assembly: AssemblyCopyright("Copyright © 2022-2025 RzR All rights reserved.")]
+[assembly: AssemblyCopyright("Copyright © 2022-2026 RzR All rights reserved.")]
 [assembly: AssemblyTrademark("® RzR™")]
 [assembly:
     AssemblyDescription(
@@ -47,6 +47,6 @@ using System.Resources;
 [assembly: NeutralResourcesLanguage("en-US", UltimateResourceFallbackLocation.MainAssembly)]
 #endif
 
-[assembly: AssemblyVersion("2.1.0.8378")]
-[assembly: AssemblyFileVersion("2.1.0.8378")]
-[assembly: AssemblyInformationalVersion("2.1.0.8378")]
+[assembly: AssemblyVersion("3.0.0.7953")]
+[assembly: AssemblyFileVersion("3.0.0.7953")]
+[assembly: AssemblyInformationalVersion("3.0.0.7953")]

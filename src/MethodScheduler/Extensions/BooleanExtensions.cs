@@ -17,11 +17,11 @@
 #region U S A G E S
 
 using System.Linq;
-using DomainCommonExtensions.DataTypeExtensions;
+using RzR.Extensions.Domain.Primitives;
 
 #endregion
 
-namespace MethodScheduler.Extensions
+namespace RzR.Scheduling.RecurringJobs.Extensions
 {
     /// <summary>
     ///     A boolean extensions.
