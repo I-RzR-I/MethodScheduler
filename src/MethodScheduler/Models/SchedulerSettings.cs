@@ -16,11 +16,21 @@
 
 // ReSharper disable ClassNeverInstantiated.Global
 
-namespace MethodScheduler.Models
+#region U S A G E S
+
+using System;
+
+#endregion
+
+namespace RzR.Scheduling.RecurringJobs.Models
 {
     /// <summary>
-    ///     Scheduler settings
+    ///     Scheduler settings.
     /// </summary>
+    /// <remarks>
+    ///     This class is obsolete. Use <see cref="ScheduledJobOptions"/> instead.
+    /// </remarks>
+    [Obsolete("SchedulerSettings is obsolete. Use ScheduledJobOptions instead.", error: false)]
     public class SchedulerSettings
     {
         /// <summary>

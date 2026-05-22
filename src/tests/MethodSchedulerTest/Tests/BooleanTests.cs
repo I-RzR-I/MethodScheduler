@@ -1,23 +1,24 @@
 ﻿// ***********************************************************************
-//  Assembly         : RzR.Services.MethodSchedulerTest
-//  Author           : RzR
-//  Created On       : 2025-07-10 15:54
+//  Assembly          : RzR.Services.MethodSchedulerTest
+//  Author            : RzR
+//  Created           : 10-07-2025 21:07
 // 
 //  Last Modified By : RzR
-//  Last Modified On : 2025-07-10 19:47
-// ***********************************************************************
+//  Last Modified On : 12-05-2026 21:32
+//  ***********************************************************************
 //  <copyright file="BooleanTests.cs" company="RzR SOFT & TECH">
-//   Copyright © RzR. All rights reserved.
+//      Copyright (c) RzR. All rights reserved.
 //  </copyright>
-// 
-//  <summary>
-//  </summary>
-// ***********************************************************************
+//  <contact>
+//      https://iamrzr.dev/contact
+//  </contact>
+//  <summary></summary>
+//  ***********************************************************************
 
-#region U S A G E S
+#region U S I N G
 
-using MethodScheduler.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RzR.Scheduling.RecurringJobs.Extensions;
 
 #endregion
 
