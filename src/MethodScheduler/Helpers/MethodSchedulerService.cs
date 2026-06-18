@@ -36,7 +36,7 @@ namespace RzR.Scheduling.RecurringJobs.Helpers
     /// <summary>
     ///     A service for accessing method schedulers information. This class cannot be inherited.
     /// </summary>
-    /// <seealso cref="T:MethodScheduler.Abstractions.IMethodScheduler" />
+    /// <seealso cref="T:RzR.Scheduling.RecurringJobs.Abstractions.IMethodScheduler" />
     /// <seealso cref="T:IDisposable" />
     /// ###
     /// <inheritdoc cref="IMethodScheduler" />
@@ -523,7 +523,7 @@ namespace RzR.Scheduling.RecurringJobs.Helpers
         /// =================================================================================================
         private void ThrowIfDisposed()
         {
-            if (_disposed == 1)
+            if (Volatile.Read(ref _disposed) == 1)
             {
                 throw new ObjectDisposedException(nameof(MethodSchedulerService));
             }
