@@ -17,9 +17,8 @@
 #region U S A G E S
 
 using System;
-using System.Threading;
 using System.Threading.Tasks;
-using DomainCommonExtensions.DataTypeExtensions;
+using RzR.Extensions.Domain.Primitives;
 
 #endregion
 
@@ -35,10 +34,10 @@ namespace TestConsoleCode
         public static async Task<bool> InitAsync(string message = null)
         {
             Console.WriteLine($"async WriteTestLog.InitAsync-{DateTime.Now.FormatToString("yyyy-MM-dd-HH-mm-ss")}\t{message}");
-            Thread.Sleep(TimeSpan.FromMinutes(2));
+            await Task.Delay(TimeSpan.FromMinutes(2)).ConfigureAwait(false);
 
             // throw new Exception("10-11-12");
-            return await Task.FromResult(true);
+            return true;
         }
 
         /// <summary>
@@ -62,8 +61,7 @@ namespace TestConsoleCode
         {
             Console.WriteLine(
                 $"async WriteTestLog.InitTask1Async-{DateTime.Now.FormatToString("yyyy-MM-dd-HH-mm-ss")}\t{message}");
-            Thread.Sleep(TimeSpan.FromMinutes(0.5));
-            await Task.CompletedTask;
+            await Task.Delay(TimeSpan.FromMinutes(0.5)).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -75,8 +73,7 @@ namespace TestConsoleCode
         {
             Console.WriteLine(
                 $"async WriteTestLog.InitTask2Async-{DateTime.Now.FormatToString("yyyy-MM-dd-HH-mm-ss")}\t{message}");
-            Thread.Sleep(TimeSpan.FromMinutes(1));
-            await Task.CompletedTask;
+            await Task.Delay(TimeSpan.FromMinutes(1)).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -88,8 +85,7 @@ namespace TestConsoleCode
         {
             Console.WriteLine(
                 $"async WriteTestLog.InitTask3Async-{DateTime.Now.FormatToString("yyyy-MM-dd-HH-mm-ss")}\t{message}");
-            Thread.Sleep(TimeSpan.FromMinutes(2));
-            await Task.CompletedTask;
+            await Task.Delay(TimeSpan.FromMinutes(2)).ConfigureAwait(false);
         }
     }
 }

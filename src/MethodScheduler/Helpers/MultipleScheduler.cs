@@ -18,9 +18,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using DomainCommonExtensions.CommonExtensions;
 using RzR.Scheduling.RecurringJobs.Abstractions;
 using RzR.Scheduling.RecurringJobs.Models;
 
@@ -41,12 +39,8 @@ namespace RzR.Scheduling.RecurringJobs.Helpers
         /// </summary>
         public static MultipleScheduler Instance { get; } = new MultipleScheduler();
 
-        /// <summary>
-        ///     Gets or sets execution queue method.
-        /// </summary>
-        /// <value></value>
-        /// <remarks></remarks>
-        private static IList<MultipleScheduler> Queue { get; set; }
+        private static readonly IList<MultipleScheduler> Queue = new List<MultipleScheduler>();
+        private static readonly object QueueLock = new object();
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="MultipleScheduler" /> class.
@@ -166,57 +160,69 @@ namespace RzR.Scheduling.RecurringJobs.Helpers
 
         /// <inheritdoc />
         public void Start(
-            Action scheduleMethod, 
-            SchedulerSettings settings, 
+            Action scheduleMethod,
+            SchedulerSettings settings,
             int? stopAfterXIteration = null,
             bool forceStopAfterFirstSuccessExecution = false)
         {
-            if (Queue.IsNull()) Queue = new List<MultipleScheduler>();
-            Queue.Add(new MultipleScheduler(scheduleMethod, settings, stopAfterXIteration, forceStopAfterFirstSuccessExecution));
+            lock (QueueLock)
+            {
+                Queue.Add(new MultipleScheduler(scheduleMethod, settings, stopAfterXIteration, 
+                    forceStopAfterFirstSuccessExecution));
+            }
         }
 
         /// <inheritdoc />
         public void Start(
-            IEnumerable<Action> scheduleMethods, 
-            SchedulerSettings settings, 
+            IEnumerable<Action> scheduleMethods,
+            SchedulerSettings settings,
             int? stopAfterXIteration = null,
             bool forceStopAfterFirstSuccessExecution = false)
         {
-            if (Queue.IsNull()) Queue = new List<MultipleScheduler>();
-            Queue.Add(new MultipleScheduler(scheduleMethods, settings, stopAfterXIteration, forceStopAfterFirstSuccessExecution));
+            lock (QueueLock)
+            {
+                Queue.Add(new MultipleScheduler(scheduleMethods, settings, stopAfterXIteration,
+                    forceStopAfterFirstSuccessExecution));
+            }
         }
 
         /// <inheritdoc />
         public void Start(
-            Func<Task> scheduleMethod, 
-            SchedulerSettings settings, 
+            Func<Task> scheduleMethod,
+            SchedulerSettings settings,
             int? stopAfterXIteration = null,
             bool forceStopAfterFirstSuccessExecution = false)
         {
-            if (Queue.IsNull()) Queue = new List<MultipleScheduler>();
-            Queue.Add(new MultipleScheduler(scheduleMethod, settings, stopAfterXIteration, forceStopAfterFirstSuccessExecution));
+            lock (QueueLock)
+            {
+                Queue.Add(new MultipleScheduler(scheduleMethod, settings, stopAfterXIteration,
+                    forceStopAfterFirstSuccessExecution));
+            }
         }
 
         /// <inheritdoc />
         public void Start(
-            IEnumerable<Func<Task>> scheduleMethods, 
-            SchedulerSettings settings, 
+            IEnumerable<Func<Task>> scheduleMethods,
+            SchedulerSettings settings,
             int? stopAfterXIteration = null,
             bool forceStopAfterFirstSuccessExecution = false)
         {
-            if (Queue.IsNull()) Queue = new List<MultipleScheduler>();
-            Queue.Add(new MultipleScheduler(scheduleMethods, settings, stopAfterXIteration, forceStopAfterFirstSuccessExecution));
+            lock (QueueLock)
+            {
+                Queue.Add(new MultipleScheduler(scheduleMethods, settings, stopAfterXIteration, 
+                    forceStopAfterFirstSuccessExecution));
+            }
         }
 
         /// <inheritdoc />
         public void Stop()
         {
-            if (Queue.IsNotNull() && Queue.Any())
-                Queue.ToList().ForEach(n =>
-                {
+            lock (QueueLock)
+            {
+                foreach (var n in Queue)
                     n.StopScheduler();
-                    //Queue.Remove(n);
-                });
+                Queue.Clear();
+            }
 
             base.StopScheduler();
         }

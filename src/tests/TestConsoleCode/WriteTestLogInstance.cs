@@ -18,7 +18,8 @@
 
 using System;
 using System.Threading.Tasks;
-using DomainCommonExtensions.DataTypeExtensions;
+using RzR.Extensions.Domain.Primitives;
+
 // ReSharper disable ClassNeverInstantiated.Global
 
 #endregion

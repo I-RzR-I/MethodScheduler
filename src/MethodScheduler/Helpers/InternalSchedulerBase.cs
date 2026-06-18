@@ -22,12 +22,10 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using DomainCommonExtensions.CommonExtensions.TypeParam;
-using DomainCommonExtensions.DataTypeExtensions;
+using RzR.Extensions.Domain.Primitives;
+using RzR.Extensions.Domain.Reflection.TypeParam;
 using RzR.Scheduling.RecurringJobs.Extensions;
 using RzR.Scheduling.RecurringJobs.Models;
-
-// ReSharper disable AsyncVoidLambda
 
 #endregion
 
@@ -40,13 +38,15 @@ namespace RzR.Scheduling.RecurringJobs.Helpers
     ///     This class is obsolete. Use <see cref="MethodSchedulerService"/> instead.
     /// </remarks>
     [Obsolete("InternalSchedulerBase is obsolete. Use MethodSchedulerService and ScheduledJobOptions instead.", error: false)]
-    public class InternalSchedulerBase
+    public class InternalSchedulerBase : IDisposable
     {
         /// <summary>
         ///     Execute timer
         /// </summary>
         /// <remarks></remarks>
         private Timer _timer;
+
+        private bool _disposed;
 
         /// <summary>
         ///     Current execute interval
@@ -94,20 +94,31 @@ namespace RzR.Scheduling.RecurringJobs.Helpers
             {
                 try
                 {
-                    scheduleMethod.Invoke();
-                    _interval = Settings.SuccessInterval;
+                    failure = false;
+                    error.Clear();
+
+                    try
+                    {
+                        scheduleMethod.Invoke();
+                        _interval = Settings.SuccessInterval;
+                    }
+                    catch (Exception e)
+                    {
+                        failure = true;
+                        error.AppendLine(e.ToString());
+                        _interval = Settings.FailInterval;
+                    }
+                    finally
+                    {
+                        if (StopAfterXIteration.IsNullOrZero().IsFalse())
+                            executionIteration++;
+                        FinallyThrowOrChangeTimer(failure, error, executionIteration);
+                    }
                 }
-                catch (Exception e)
+                catch
                 {
-                    failure = true;
-                    error.AppendLine(e.ToString());
-                    _interval = Settings.FailInterval;
-                }
-                finally
-                {
-                    if (StopAfterXIteration.IsNullOrZero().IsFalse())
-                        executionIteration++;
-                    FinallyThrowOrChangeTimer(failure, error, executionIteration);
+                    // Swallow — must not escape a TimerCallback and crash the process.
+                    // Use MethodSchedulerService for observable failure handling.
                 }
             }, null, _interval.MinutesToMs(), Timeout.Infinite);
         }
@@ -127,21 +138,30 @@ namespace RzR.Scheduling.RecurringJobs.Helpers
             {
                 try
                 {
-                    Task.WaitAll(scheduleMethods.Select(m => Task.Factory.StartNew(m.Invoke)).ToArray());
+                    failure = false;
+                    error.Clear();
 
-                    _interval = Settings.SuccessInterval;
+                    try
+                    {
+                        Task.WaitAll(scheduleMethods.Select(m => Task.Run(m.Invoke)).ToArray());
+                        _interval = Settings.SuccessInterval;
+                    }
+                    catch (Exception e)
+                    {
+                        failure = true;
+                        error.AppendLine(e.ToString());
+                        _interval = Settings.FailInterval;
+                    }
+                    finally
+                    {
+                        if (StopAfterXIteration.IsNullOrZero().IsFalse())
+                            executionIteration++;
+                        FinallyThrowOrChangeTimer(failure, error, executionIteration);
+                    }
                 }
-                catch (Exception e)
+                catch
                 {
-                    failure = true;
-                    error.AppendLine(e.ToString());
-                    _interval = Settings.FailInterval;
-                }
-                finally
-                {
-                    if (StopAfterXIteration.IsNullOrZero().IsFalse())
-                        executionIteration++;
-                    FinallyThrowOrChangeTimer(failure, error, executionIteration);
+                    // Swallow — must not escape a TimerCallback and crash the process.
                 }
             }, null, _interval.MinutesToMs(), Timeout.Infinite);
         }
@@ -161,20 +181,31 @@ namespace RzR.Scheduling.RecurringJobs.Helpers
             {
                 try
                 {
-                    await scheduleMethod.Invoke();
-                    _interval = Settings.SuccessInterval;
+                    failure = false;
+                    error.Clear();
+
+                    try
+                    {
+                        await scheduleMethod.Invoke().ConfigureAwait(false);
+                        _interval = Settings.SuccessInterval;
+                    }
+                    catch (Exception e)
+                    {
+                        failure = true;
+                        error.AppendLine(e.ToString());
+                        _interval = Settings.FailInterval;
+                    }
+                    finally
+                    {
+                        if (StopAfterXIteration.IsNullOrZero().IsFalse())
+                            executionIteration++;
+                        FinallyThrowOrChangeTimer(failure, error, executionIteration);
+                    }
                 }
-                catch (Exception e)
+                catch
                 {
-                    failure = true;
-                    error.AppendLine(e.ToString());
-                    _interval = Settings.FailInterval;
-                }
-                finally
-                {
-                    if (StopAfterXIteration.IsNullOrZero().IsFalse())
-                        executionIteration++;
-                    FinallyThrowOrChangeTimer(failure, error, executionIteration);
+                    // Swallow — async void must not let exceptions escape to the thread pool.
+                    // Use MethodSchedulerService for observable failure handling.
                 }
             }, null, _interval.MinutesToMs(), Timeout.Infinite);
         }
@@ -194,23 +225,32 @@ namespace RzR.Scheduling.RecurringJobs.Helpers
             {
                 try
                 {
-                    Task.WaitAll(scheduleMethods.Select(m => Task.Factory.StartNew(async () => await m.Invoke()))
-                        .Cast<Task>().ToArray());
+                    failure = false;
+                    error.Clear();
 
-                    await Task.CompletedTask;
-                    _interval = Settings.SuccessInterval;
+                    try
+                    {
+                        // Task.Run unwraps Task<Task> correctly; WhenAll awaits the inner async work.
+                        await Task.WhenAll(scheduleMethods.Select(m => Task.Run(m.Invoke))).ConfigureAwait(false);
+                        _interval = Settings.SuccessInterval;
+                    }
+                    catch (Exception e)
+                    {
+                        failure = true;
+                        error.AppendLine(e.ToString());
+                        _interval = Settings.FailInterval;
+                    }
+                    finally
+                    {
+                        if (StopAfterXIteration.IsNullOrZero().IsFalse())
+                            executionIteration++;
+                        FinallyThrowOrChangeTimer(failure, error, executionIteration);
+                    }
                 }
-                catch (Exception e)
+                catch
                 {
-                    failure = true;
-                    error.AppendLine(e.ToString());
-                    _interval = Settings.FailInterval;
-                }
-                finally
-                {
-                    if (StopAfterXIteration.IsNullOrZero().IsFalse())
-                        executionIteration++;
-                    FinallyThrowOrChangeTimer(failure, error, executionIteration);
+                    // Swallow — async void must not let exceptions escape to the thread pool.
+                    // Use MethodSchedulerService for observable failure handling.
                 }
             }, null, _interval.MinutesToMs(), Timeout.Infinite);
         }
@@ -221,7 +261,17 @@ namespace RzR.Scheduling.RecurringJobs.Helpers
         /// <remarks></remarks>
         protected void StopScheduler()
         {
-            _timer?.Change(Timeout.Infinite, Timeout.Infinite);
+            try { _timer?.Change(Timeout.Infinite, Timeout.Infinite); } catch (ObjectDisposedException) { }
+            _timer?.Dispose();
+            _timer = null;
+        }
+
+        /// <inheritdoc/>
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _disposed = true;
+            StopScheduler();
         }
 
         /// <summary>
@@ -238,7 +288,7 @@ namespace RzR.Scheduling.RecurringJobs.Helpers
 
             if (BooleanExtensions.AllTrue(Settings.DisableOnFailure, isFailure).IsTrue())
                 StopScheduler();
-            else _timer.Change(_interval.MinutesToMs(), Timeout.Infinite);
+            else { try { _timer?.Change(_interval.MinutesToMs(), Timeout.Infinite); } catch (ObjectDisposedException) { } }
 
             if (StopAfterXIteration.IsNullOrZero().IsFalse() && executionIteration >= StopAfterXIteration.IfIsNull(0))
                 StopScheduler();

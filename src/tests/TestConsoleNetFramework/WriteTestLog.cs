@@ -19,7 +19,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using DomainCommonExtensions.DataTypeExtensions;
+using RzR.Extensions.Domain.Primitives;
 
 #endregion
 

@@ -34,7 +34,7 @@ namespace RzR.Scheduling.RecurringJobs.Helpers
     ///     -based async loop so that async work is properly awaited and exceptions do not escape to
     ///     the process-level unhandled-exception handler.
     /// </summary>
-    /// <seealso cref="T:MethodScheduler.Abstractions.IScheduledJob"/>
+    /// <seealso cref="T:RzR.Scheduling.RecurringJobs.Abstractions.IScheduledJob"/>
     /// <seealso cref="T:IDisposable"/>
     /// =================================================================================================
     internal sealed class ScheduledJob : IScheduledJob, IDisposable
@@ -88,9 +88,11 @@ namespace RzR.Scheduling.RecurringJobs.Helpers
         /// =================================================================================================
         private Exception _lastError;
 
-        // Observability fields. Reads may be slightly stale; the contract is documented
-        // on IScheduledJob. On 32-bit runtimes torn reads of these struct values are
-        // possible — callers needing strong consistency should snapshot via Completion.
+        // Timestamp fields stored as UTC ticks; long.MinValue = null sentinel.
+        // Written via Interlocked.Exchange, read via Volatile.Read — safe on 32-bit.
+        private long _lastRunAtTicks = long.MinValue;
+        private long _lastSuccessAtTicks = long.MinValue;
+        private long _nextRunAtTicks = long.MinValue;
 
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
@@ -160,13 +162,43 @@ namespace RzR.Scheduling.RecurringJobs.Helpers
         public int IterationCount => Volatile.Read(ref _iterationCount);
 
         /// <inheritdoc/>
-        public DateTimeOffset? LastRunAt { get; private set; }
+        public DateTimeOffset? LastRunAt
+        {
+            get
+            {
+                var ticks = Volatile.Read(ref _lastRunAtTicks);
+
+                return ticks == long.MinValue 
+                    ? (DateTimeOffset?)null 
+                    : new DateTimeOffset(ticks, TimeSpan.Zero);
+            }
+        }
 
         /// <inheritdoc/>
-        public DateTimeOffset? LastSuccessAt { get; private set; }
+        public DateTimeOffset? LastSuccessAt
+        {
+            get
+            {
+                var ticks = Volatile.Read(ref _lastSuccessAtTicks);
+
+                return ticks == long.MinValue 
+                    ? (DateTimeOffset?)null
+                    : new DateTimeOffset(ticks, TimeSpan.Zero);
+            }
+        }
 
         /// <inheritdoc/>
-        public DateTimeOffset? NextRunAt { get; private set; }
+        public DateTimeOffset? NextRunAt
+        {
+            get
+            {
+                var ticks = Volatile.Read(ref _nextRunAtTicks);
+
+                return ticks == long.MinValue 
+                    ? (DateTimeOffset?)null 
+                    : new DateTimeOffset(ticks, TimeSpan.Zero);
+            }
+        }
 
         /// <inheritdoc/>
         public Exception LastError => Volatile.Read(ref _lastError);
@@ -219,8 +251,8 @@ namespace RzR.Scheduling.RecurringJobs.Helpers
                     var iterationFailed = false;
                     Exception iterationError = null;
 
-                    LastRunAt = DateTimeOffset.UtcNow;
-                    NextRunAt = null;
+                    Interlocked.Exchange(ref _lastRunAtTicks, DateTimeOffset.UtcNow.Ticks);
+                    Interlocked.Exchange(ref _nextRunAtTicks, long.MinValue);
 
                     try
                     {
@@ -245,7 +277,7 @@ namespace RzR.Scheduling.RecurringJobs.Helpers
                         // Clear stale LastError on every successful iteration so observers
                         // (alerts, dashboards) see recovery instead of a permanently stuck error.
                         Interlocked.Exchange(ref _lastError, null);
-                        LastSuccessAt = DateTimeOffset.UtcNow;
+                        Interlocked.Exchange(ref _lastSuccessAtTicks, DateTimeOffset.UtcNow.Ticks);
                     }
 
                     // ---- Stop-condition evaluation (order matters) ----
@@ -277,7 +309,7 @@ namespace RzR.Scheduling.RecurringJobs.Helpers
                     // ---- Schedule next iteration ----
 
                     var delay = iterationFailed ? _options.FailInterval : _options.SuccessInterval;
-                    NextRunAt = DateTimeOffset.UtcNow + delay;
+                    Interlocked.Exchange(ref _nextRunAtTicks, (DateTimeOffset.UtcNow + delay).Ticks);
 
                     try
                     {
@@ -298,7 +330,7 @@ namespace RzR.Scheduling.RecurringJobs.Helpers
                 // Transition to Stopped if not already in a terminal state.
                 Interlocked.CompareExchange(ref _state, (int)JobState.Stopped, (int)JobState.Running);
                 Interlocked.CompareExchange(ref _state, (int)JobState.Stopped, (int)JobState.Pending);
-                NextRunAt = null;
+                Interlocked.Exchange(ref _nextRunAtTicks, long.MinValue);
 
                 // Notify the scheduler so naturally-completed jobs do not leak in the registry.
                 // Idempotent: TryRemove on a non-existent key is a no-op.
