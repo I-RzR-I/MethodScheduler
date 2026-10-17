@@ -32,7 +32,6 @@ using SchedulerParallelMode = RzR.Scheduling.RecurringJobs.Enums.ParallelExecuti
 
 namespace RzR.Scheduling.RecurringJobs.Helpers
 {
-    /// -------------------------------------------------------------------------------------------------
     /// <summary>
     ///     A service for accessing method schedulers information. This class cannot be inherited.
     /// </summary>
@@ -40,50 +39,39 @@ namespace RzR.Scheduling.RecurringJobs.Helpers
     /// <seealso cref="T:IDisposable" />
     /// ###
     /// <inheritdoc cref="IMethodScheduler" />
-    /// =================================================================================================
     public sealed class MethodSchedulerService : IMethodScheduler, IDisposable
     {
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
-        ///     (Immutable) Lazily initialised process-wide instance for callers that don't use DI. Lazy&lt;T&gt;
+        ///     (Immutable) Lazily initialised process-wide instance for callers that don't use DI.
+        ///     Lazy&lt;T&gt;
         ///     guarantees thread-safe single construction without explicit locking and defers allocation
         ///     until the property is first read.
         /// </summary>
-        /// =================================================================================================
         private static readonly Lazy<MethodSchedulerService> DefaultService =
             new(() => new MethodSchedulerService(), LazyThreadSafetyMode.ExecutionAndPublication);
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     (Immutable) Coordinates swap of _schedulerCts during StopAllAsync so a concurrent
         ///     Schedule call cannot read a half-disposed CTS.
         /// </summary>
-        /// =================================================================================================
         private readonly object _ctsLock = new();
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     (Immutable) Thread-safe job registry: jobId → running job.
         /// </summary>
-        /// =================================================================================================
         private readonly ConcurrentDictionary<string, ScheduledJob> _jobs = new(StringComparer.Ordinal);
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     The disposed.
         /// </summary>
-        /// =================================================================================================
         private int _disposed;
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Cancels every job when StopAllAsync runs or when the scheduler is disposed. Replaced
         ///     after StopAllAsync so the scheduler remains usable.
         /// </summary>
-        /// =================================================================================================
         private CancellationTokenSource _schedulerCts = new();
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Gets a process-wide default scheduler instance for callers that do not use dependency
         ///     injection (e.g. console apps, .NET Framework code, static helpers).
@@ -107,10 +95,8 @@ namespace RzR.Scheduling.RecurringJobs.Helpers
         /// <value>
         ///     The default.
         /// </value>
-        /// =================================================================================================
         public static MethodSchedulerService Default => DefaultService.Value;
 
-        /// -------------------------------------------------------------------------------------------------
         /// <remarks>
         ///     Synchronous wrapper over <see cref="DisposeAsync" />. Provided so that
         ///     <c>using var scheduler = new MethodSchedulerService();</c> works in
@@ -126,7 +112,6 @@ namespace RzR.Scheduling.RecurringJobs.Helpers
         ///     </para>
         /// </remarks>
         /// <inheritdoc />
-        /// =================================================================================================
         public void Dispose()
         {
             Task.Run(() => DisposeAsync().AsTask()).GetAwaiter().GetResult();
@@ -344,13 +329,11 @@ namespace RzR.Scheduling.RecurringJobs.Helpers
             }
         }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Called by ScheduledJob when its run loop exits naturally so the registry does not retain
         ///     references to terminated jobs.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        /// =================================================================================================
         private void DeregisterJob(string id)
         {
             if (_jobs.TryRemove(id, out var job))
@@ -359,7 +342,6 @@ namespace RzR.Scheduling.RecurringJobs.Helpers
             }
         }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Validates the options described by options.
         /// </summary>
@@ -367,7 +349,6 @@ namespace RzR.Scheduling.RecurringJobs.Helpers
         ///     Thrown when one or more arguments have unsupported or illegal values.
         /// </exception>
         /// <param name="options">Options for controlling the operation.</param>
-        /// =================================================================================================
         private static void ValidateOptions(ScheduledJobOptions options)
         {
             if (options.SuccessInterval <= TimeSpan.Zero)
@@ -399,7 +380,6 @@ namespace RzR.Scheduling.RecurringJobs.Helpers
             }
         }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Executes <paramref name="work" /> items with bounded concurrency controlled by a
         ///     <see cref="SemaphoreSlim" />. At most <paramref name="maxDop" /> items run at the
@@ -415,7 +395,6 @@ namespace RzR.Scheduling.RecurringJobs.Helpers
         /// <returns>
         ///     A Task.
         /// </returns>
-        /// =================================================================================================
         private static async Task ExecuteThrottledAsync(Func<CancellationToken, Task>[] work,
             int maxDop, bool ignoreErrors, CancellationToken cancellationToken)
         {
@@ -451,7 +430,6 @@ namespace RzR.Scheduling.RecurringJobs.Helpers
             }
         }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Runs a single work item and guarantees the semaphore slot is released afterwards.
         /// </summary>
@@ -462,7 +440,6 @@ namespace RzR.Scheduling.RecurringJobs.Helpers
         /// <returns>
         ///     A Task.
         /// </returns>
-        /// =================================================================================================
         private static async Task RunWithRelease(Func<CancellationToken, Task> work,
             SemaphoreSlim semaphore, bool ignoreErrors, CancellationToken cancellationToken)
         {
@@ -483,7 +460,6 @@ namespace RzR.Scheduling.RecurringJobs.Helpers
             }
         }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Executes the ignoring errors on a different thread, and waits for the result.
         /// </summary>
@@ -495,7 +471,6 @@ namespace RzR.Scheduling.RecurringJobs.Helpers
         /// <returns>
         ///     A Task.
         /// </returns>
-        /// =================================================================================================
         private static async Task InvokeIgnoringErrors(Func<CancellationToken, Task> work,
             CancellationToken cancellationToken)
         {
@@ -513,14 +488,12 @@ namespace RzR.Scheduling.RecurringJobs.Helpers
             }
         }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Throw if disposed.
         /// </summary>
         /// <exception cref="ObjectDisposedException">
         ///     Thrown when a supplied object has been disposed.
         /// </exception>
-        /// =================================================================================================
         private void ThrowIfDisposed()
         {
             if (Volatile.Read(ref _disposed) == 1)

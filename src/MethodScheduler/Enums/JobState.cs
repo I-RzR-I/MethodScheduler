@@ -23,11 +23,9 @@ using RzR.Scheduling.RecurringJobs.Models;
 
 namespace RzR.Scheduling.RecurringJobs.Enums
 {
-    /// -------------------------------------------------------------------------------------------------
     /// <summary>
     ///     Represents the lifecycle state of a scheduled job.
     /// </summary>
-    /// =================================================================================================
     public enum JobState
     {
         /// <summary>

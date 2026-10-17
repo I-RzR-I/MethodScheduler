@@ -23,7 +23,6 @@ using RzR.Scheduling.RecurringJobs.Models;
 
 namespace RzR.Scheduling.RecurringJobs.Enums
 {
-    /// -------------------------------------------------------------------------------------------------
     /// <summary>
     ///     Controls how multiple work items within a single job iteration are executed.
     /// </summary>
@@ -34,7 +33,6 @@ namespace RzR.Scheduling.RecurringJobs.Enums
     ///     Leaving it <see langword="null" /> (the default) means all items start simultaneously.
     /// 
     /// </remarks>
-    /// =================================================================================================
     public enum ParallelExecutionMode
     {
         /// <summary>
