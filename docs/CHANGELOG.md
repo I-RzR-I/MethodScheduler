@@ -1,3 +1,8 @@
+### **v3.2.0.982** [[RzR](mailto:108324929+I-RzR-I@users.noreply.github.com)] 18-10-2026
+* [e85f320] (RzR) -> Auto commit uncommited files
+* [cfa503d] (RzR) -> Update the methods summary to use the same pattern.
+* [0e5ec6f] (RzR) -> Upgrade the ref extension package version.
+
 ### **v3.1.0.8026** [[RzR](mailto:108324929+I-RzR-I@users.noreply.github.com)] 18-06-2026
 * [7058597] (RzR) -> Auto commit uncommited files
 * [4cf4203] (RzR) -> Upgrade reference package version and fix legacy scheduler bugs
