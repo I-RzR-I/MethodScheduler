@@ -25,18 +25,15 @@ using RzR.Scheduling.RecurringJobs.Models;
 
 namespace RzR.Scheduling.RecurringJobs.Abstractions
 {
-    /// -------------------------------------------------------------------------------------------------
     /// <summary>
     ///     Multiple method scheduler.
     /// </summary>
     /// <remarks>
     ///     This interface is obsolete. Use <see cref="IMethodScheduler"/> instead.
     /// </remarks>
-    /// =================================================================================================
     [Obsolete("IMultipleScheduler is obsolete. Use IMethodScheduler and ScheduledJobOptions instead.", error: false)]
     public interface IMultipleScheduler
     {
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Start new schedule.
         /// </summary>
@@ -51,14 +48,12 @@ namespace RzR.Scheduling.RecurringJobs.Abstractions
         ///     (Optional)
         ///     Force stop scheduler after the first successful execution. Default value is 'false'.
         /// </param>
-        /// =================================================================================================
         void Start(
             Action scheduleMethod, 
             SchedulerSettings settings, 
             int? stopAfterXIteration = null,
             bool forceStopAfterFirstSuccessExecution = false);
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Start new schedule.
         /// </summary>
@@ -73,14 +68,12 @@ namespace RzR.Scheduling.RecurringJobs.Abstractions
         ///     (Optional)
         ///     Force stop scheduler after the first successful execution. Default value is 'false'.
         /// </param>
-        /// =================================================================================================
         void Start(
             IEnumerable<Action> scheduleMethods,
             SchedulerSettings settings, 
             int? stopAfterXIteration = null,
             bool forceStopAfterFirstSuccessExecution = false);
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Start new schedule.
         /// </summary>
@@ -95,14 +88,12 @@ namespace RzR.Scheduling.RecurringJobs.Abstractions
         ///     (Optional)
         ///     Force stop scheduler after the first successful execution. Default value is 'false'.
         /// </param>
-        /// =================================================================================================
         void Start(
             Func<Task> scheduleMethod, 
             SchedulerSettings settings, 
             int? stopAfterXIteration = null,
             bool forceStopAfterFirstSuccessExecution = false);
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Start new schedule.
         /// </summary>
@@ -117,18 +108,15 @@ namespace RzR.Scheduling.RecurringJobs.Abstractions
         ///     (Optional)
         ///     Force stop scheduler after the first successful execution. Default value is 'false'.
         /// </param>
-        /// =================================================================================================
         void Start(
             IEnumerable<Func<Task>> scheduleMethods, 
             SchedulerSettings settings, 
             int? stopAfterXIteration = null,
             bool forceStopAfterFirstSuccessExecution = false);
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Stop scheduler.
         /// </summary>
-        /// =================================================================================================
         void Stop();
     }
 }

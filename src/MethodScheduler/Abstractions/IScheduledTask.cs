@@ -25,7 +25,6 @@ using RzR.Scheduling.RecurringJobs.Models;
 
 namespace RzR.Scheduling.RecurringJobs.Abstractions
 {
-    /// -------------------------------------------------------------------------------------------------
     /// <summary>
     ///     Marker interface for a class-based scheduled task registered via
     ///     <c>services.AddScheduledTask&lt;TTask&gt;()</c>.
@@ -57,10 +56,8 @@ namespace RzR.Scheduling.RecurringJobs.Abstractions
     ///         .
     ///     </para>
     /// </remarks>
-    /// =================================================================================================
     public interface IScheduledTask
     {
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Default scheduling options for this task. These can be overridden at registration time
         ///     via the
@@ -70,10 +67,8 @@ namespace RzR.Scheduling.RecurringJobs.Abstractions
         /// <value>
         ///     The options.
         /// </value>
-        /// =================================================================================================
         ScheduledJobOptions Options { get; }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Executes a single iteration of the scheduled work.
         /// </summary>
@@ -84,7 +79,6 @@ namespace RzR.Scheduling.RecurringJobs.Abstractions
         /// <returns>
         ///     A Task.
         /// </returns>
-        /// =================================================================================================
         Task ExecuteAsync(CancellationToken cancellationToken);
     }
 }

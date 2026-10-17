@@ -28,17 +28,14 @@ using RzR.Scheduling.RecurringJobs.Models;
 
 namespace RzR.Scheduling.RecurringJobs.Extensions
 {
-    /// -------------------------------------------------------------------------------------------------
     /// <summary>
     ///     Convenience extension methods for <see cref="IMethodScheduler" /> that wrap synchronous <see cref="Action" />
     ///     delegates and <see cref="Func{Task}" />
     ///     delegates (without <see cref="CancellationToken" />) into the canonical
     ///     <c>Func&lt;CancellationToken, Task&gt;</c> signature.
     /// </summary>
-    /// =================================================================================================
     public static class MethodSchedulerExtensions
     {
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Schedules a synchronous <see cref="Action" /> to run repeatedly.
         /// </summary>
@@ -51,7 +48,6 @@ namespace RzR.Scheduling.RecurringJobs.Extensions
         /// <returns>
         ///     An IScheduledJob.
         /// </returns>
-        /// =================================================================================================
         public static IScheduledJob Schedule(this IMethodScheduler scheduler,
             ScheduledJobOptions options, Action work)
         {
@@ -69,7 +65,6 @@ namespace RzR.Scheduling.RecurringJobs.Extensions
             });
         }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Schedules a <see cref="Func{Task}" /> (without <see cref="CancellationToken" />) to run
         ///     repeatedly.
@@ -83,7 +78,6 @@ namespace RzR.Scheduling.RecurringJobs.Extensions
         /// <returns>
         ///     An IScheduledJob.
         /// </returns>
-        /// =================================================================================================
         public static IScheduledJob Schedule(this IMethodScheduler scheduler,
             ScheduledJobOptions options, Func<Task> work)
         {
@@ -96,7 +90,6 @@ namespace RzR.Scheduling.RecurringJobs.Extensions
             return scheduler.Schedule(options, _ => work());
         }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Schedules multiple synchronous <see cref="Action" /> delegates to run together each
         ///     iteration. Parallelism is controlled by <see cref="ScheduledJobOptions.ParallelMode" />. 
@@ -113,7 +106,6 @@ namespace RzR.Scheduling.RecurringJobs.Extensions
         /// <returns>
         ///     An IScheduledJob.
         /// </returns>
-        /// =================================================================================================
         public static IScheduledJob Schedule(this IMethodScheduler scheduler,
             ScheduledJobOptions options, params Action[] work)
         {
@@ -134,7 +126,6 @@ namespace RzR.Scheduling.RecurringJobs.Extensions
             return scheduler.Schedule(options, wrapped);
         }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Schedules multiple <see cref="Func{Task}" /> delegates (without
         ///     <see cref="CancellationToken" />) to run together each iteration.
@@ -152,7 +143,6 @@ namespace RzR.Scheduling.RecurringJobs.Extensions
         /// <returns>
         ///     An IScheduledJob.
         /// </returns>
-        /// =================================================================================================
         public static IScheduledJob Schedule(this IMethodScheduler scheduler,
             ScheduledJobOptions options, params Func<Task>[] work)
         {

@@ -28,7 +28,6 @@ using RzR.Scheduling.RecurringJobs.Models;
 
 namespace RzR.Scheduling.RecurringJobs.Helpers
 {
-    /// -------------------------------------------------------------------------------------------------
     /// <summary>
     ///     Internal implementation of <see cref="IScheduledJob" />. Runs the schedule loop as a <see cref="Task" />
     ///     -based async loop so that async work is properly awaited and exceptions do not escape to
@@ -36,56 +35,41 @@ namespace RzR.Scheduling.RecurringJobs.Helpers
     /// </summary>
     /// <seealso cref="T:RzR.Scheduling.RecurringJobs.Abstractions.IScheduledJob"/>
     /// <seealso cref="T:IDisposable"/>
-    /// =================================================================================================
     internal sealed class ScheduledJob : IScheduledJob, IDisposable
     {
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     (Immutable) the cts.
         /// </summary>
-        /// =================================================================================================
         private readonly CancellationTokenSource _cts;
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     (Immutable) the on terminated.
         /// </summary>
-        /// =================================================================================================
         private readonly Action<string> _onTerminated;
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     (Immutable) options for controlling the operation.
         /// </summary>
-        /// =================================================================================================
         private readonly ScheduledJobOptions _options;
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     (Immutable) the work.
         /// </summary>
-        /// =================================================================================================
         private readonly Func<CancellationToken, Task> _work;
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     The disposed.
         /// </summary>
-        /// =================================================================================================
         private int _disposed;
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Interlocked counter — safe to read from any thread.
         /// </summary>
-        /// =================================================================================================
         private int _iterationCount;
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     The last error.
         /// </summary>
-        /// =================================================================================================
         private Exception _lastError;
 
         // Timestamp fields stored as UTC ticks; long.MinValue = null sentinel.
@@ -94,15 +78,12 @@ namespace RzR.Scheduling.RecurringJobs.Helpers
         private long _lastSuccessAtTicks = long.MinValue;
         private long _nextRunAtTicks = long.MinValue;
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     All state writes go through Interlocked.Exchange so reads via Volatile.Read observe a
         ///     consistent value paired with the most recent _lastError write.
         /// </summary>
-        /// =================================================================================================
         private int _state;
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Initializes a new instance of the <see cref="ScheduledJob"/> class.
         /// </summary>
@@ -111,7 +92,6 @@ namespace RzR.Scheduling.RecurringJobs.Helpers
         /// <param name="work">The work.</param>
         /// <param name="schedulerToken">A token that allows processing to be cancelled.</param>
         /// <param name="onTerminated">The on terminated.</param>
-        /// =================================================================================================
         internal ScheduledJob(
             string id,
             ScheduledJobOptions options,
@@ -225,7 +205,6 @@ namespace RzR.Scheduling.RecurringJobs.Helpers
             await Task.WhenAny(Completion, Task.Delay(Timeout.Infinite, cancellationToken)).ConfigureAwait(false);
         }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Executes the 'asynchronous' operation.
         /// </summary>
@@ -234,7 +213,6 @@ namespace RzR.Scheduling.RecurringJobs.Helpers
         /// <returns>
         ///     A Task.
         /// </returns>
-        /// =================================================================================================
         private async Task RunAsync(CancellationToken cancellationToken)
         {
             try

@@ -26,7 +26,6 @@ using RzR.Scheduling.RecurringJobs.Models;
 
 namespace RzR.Scheduling.RecurringJobs.Abstractions
 {
-    /// -------------------------------------------------------------------------------------------------
     /// <summary>
     ///     Schedules and manages recurring method execution.
     /// </summary>
@@ -35,10 +34,8 @@ namespace RzR.Scheduling.RecurringJobs.Abstractions
     ///     singleton and is safe to inject into any service lifetime. It implements <see cref="IAsyncDisposable" />
     ///     ; the DI container disposes it on shutdown, which stops all running jobs cleanly.
     /// </remarks>
-    /// =================================================================================================
     public interface IMethodScheduler : IAsyncDisposable
     {
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Schedules a single work item to run repeatedly according to <paramref name="options" />.
         /// </summary>
@@ -51,10 +48,8 @@ namespace RzR.Scheduling.RecurringJobs.Abstractions
         /// <returns>
         ///     A handle to the running job.
         /// </returns>
-        /// =================================================================================================
         IScheduledJob Schedule(ScheduledJobOptions options, Func<CancellationToken, Task> work);
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Schedules multiple work items to run together in each iteration. Execution order and
         ///     parallelism are controlled by
@@ -65,10 +60,8 @@ namespace RzR.Scheduling.RecurringJobs.Abstractions
         /// <returns>
         ///     A handle to the running job.
         /// </returns>
-        /// =================================================================================================
         IScheduledJob Schedule(ScheduledJobOptions options, params Func<CancellationToken, Task>[] work);
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Attempts to stop the job identified by <paramref name="jobId" /> and removes it from the
         ///     scheduler's tracking list.
@@ -81,10 +74,8 @@ namespace RzR.Scheduling.RecurringJobs.Abstractions
         ///     <see langword="true" /> if the job was found and stopped;
         ///     <see langword="false" /> if no job with that id is registered.
         /// </returns>
-        /// =================================================================================================
         Task<bool> TryStopAsync(string jobId, CancellationToken cancellationToken = default);
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Stops all running jobs and waits for every current iteration to complete. The scheduler
         ///     remains usable after this call returns - subsequent
@@ -98,7 +89,6 @@ namespace RzR.Scheduling.RecurringJobs.Abstractions
         /// <returns>
         ///     A Task.
         /// </returns>
-        /// =================================================================================================
         Task StopAllAsync(CancellationToken cancellationToken = default);
     }
 }

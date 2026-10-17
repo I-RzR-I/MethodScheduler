@@ -30,7 +30,6 @@ using RzR.Scheduling.RecurringJobs.Models;
 
 namespace RzR.Scheduling.RecurringJobs.Helpers
 {
-    /// -------------------------------------------------------------------------------------------------
     /// <summary>
     ///     An <see cref="IHostedService" /> that runs a class-based <see cref="IScheduledTask" />
     ///     on a repeating schedule.
@@ -44,32 +43,24 @@ namespace RzR.Scheduling.RecurringJobs.Helpers
     ///     services (e.g. <c>DbContext</c>) are safely recreated each time.
     /// </typeparam>
     /// <seealso cref="T:Microsoft.Extensions.Hosting.BackgroundService"/>
-    /// =================================================================================================
     internal sealed class ScheduledTaskHostedService<TTask> : BackgroundService
         where TTask : class, IScheduledTask
     {
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     (Immutable) the configure option.
         /// </summary>
-        /// =================================================================================================
         private readonly Action<ScheduledJobOptions> _configure;
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     (Immutable) the logger.
         /// </summary>
-        /// =================================================================================================
         private readonly ILogger<ScheduledTaskHostedService<TTask>> _logger;
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     (Immutable) the scope factory.
         /// </summary>
-        /// =================================================================================================
         private readonly IServiceScopeFactory _scopeFactory;
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Initializes a new instance of the <see cref="ScheduledTaskHostedService{TTask}"/>
         ///     class.
@@ -80,7 +71,6 @@ namespace RzR.Scheduling.RecurringJobs.Helpers
         /// <param name="scopeFactory">The scope factory.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="configure">The configure option.</param>
-        /// =================================================================================================
         internal ScheduledTaskHostedService(
             IServiceScopeFactory scopeFactory,
             ILogger<ScheduledTaskHostedService<TTask>> logger,
